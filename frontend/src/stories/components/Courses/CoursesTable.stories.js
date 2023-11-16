@@ -1,11 +1,11 @@
 import React from 'react';
-import { courseFixture } from "fixtures/courseFixture";
 import { currentUserFixtures } from 'fixtures/currentUserFixtures';
-import CourseTable from "main/components/Course/CourseTable";
+import CoursesTable from "main/components/Course/CourseTable";
+import { coursesFixtures } from 'fixtures/coursesFixtures';
 
 export default {
-    title: 'components/Course/CourseTable',
-    component: CourseTable
+    title: 'components/Courses/CoursesTable',
+    component: CoursesTable
 };
 
 const Template = (args) => {
@@ -23,10 +23,10 @@ Empty.args = {
 export const OneCourse = Template.bind({});
 
 OneCourse.args = {
-    course: courseFixture.oneCourse,
+    course: coursesFixtures.oneCourse,
 };
 
 export const ThreeCourses = Template.bind({});
 ThreeCourses.args = {
-    course: courseFixture.threeCourses,
+    course: coursesFixtures.threeCourses,
 }
