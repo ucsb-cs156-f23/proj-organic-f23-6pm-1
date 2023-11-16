@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f23/proj-organic-f23-6pm-1
 owner: ucsb-cs156-f23
 repo_name: proj-organic-f23-6pm-1
-pull_requests: [{"author":{"id":"MDQ6VXNlcjY5Njk2Njcx","is_bot":false,"login":"Joseph-Foster","name":"Joseph Foster"},"headRefName":"Joseph-Foster-patch-1","number":30,"title":"Add links to team prod and qa deployments","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-1/pull/30"}]
+pull_requests: [{"author":{"id":"MDQ6VXNlcjY5Njk2Njcx","is_bot":false,"login":"Joseph-Foster","name":"Joseph Foster"},"headRefName":"JF-typo","number":32,"title":"Fix typo in the footer ","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-1/pull/32"},{"author":{"id":"MDQ6VXNlcjY5Njk2Njcx","is_bot":false,"login":"Joseph-Foster","name":"Joseph Foster"},"headRefName":"Joseph-Foster-patch-1","number":30,"title":"Add links to team prod and qa deployments","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-1/pull/30"}]
