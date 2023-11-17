@@ -1,4 +1,4 @@
-# ucsb-cs156/proj-organic-f23-6pm-1
+# ucsb-cs156-f23/proj-organic-f23-6pm-1
 
 # Deployments
 
