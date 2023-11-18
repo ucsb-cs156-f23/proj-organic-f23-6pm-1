@@ -19,14 +19,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
-
+import edu.ucsb.cs156.organic.errors.StaffNotFoundException;
 
 import java.time.LocalDateTime;
+
+import javax.validation.Valid;
 
 @Tag(name = "Courses")
 @RequestMapping("/api/courses")
@@ -132,4 +136,39 @@ public class CoursesController extends ApiController {
         return courseStaff;
     }
 
+    @Operation(summary = "Update a course")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @PutMapping("/update")
+    public Course updateCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId,
+            @RequestBody @Valid Course incoming) throws JsonProcessingException {
+        
+        User u = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        Iterable<Staff> courseStaff = courseStaffRepository.findByCourseId(courseId);
+
+        //check if the user is a staff member of the course
+        boolean isStaff = false;
+        for (Staff staff : courseStaff) {
+            //log.info("staffId: {}, uId: {}, {}", staff.getGithubId(), u.getGithubId(), staff.getGithubId() == u.getGithubId());
+            if (staff.getGithubId().equals(u.getGithubId())) {
+                isStaff = true;
+                break;
+            }
+        }
+
+        if(!isStaff)
+            throw new StaffNotFoundException(u.getGithubId(), courseId);
+
+        course.setName(incoming.getName());
+        course.setSchool(incoming.getSchool());
+        course.setTerm(incoming.getTerm());
+        course.setStart(incoming.getStart());
+        course.setEnd(incoming.getEnd());
+        course.setGithubOrg(incoming.getGithubOrg());
+
+        courseRepository.save(course);
+        return course;
+    }
 }

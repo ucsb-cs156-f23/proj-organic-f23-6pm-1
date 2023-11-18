@@ -2,7 +2,9 @@ package edu.ucsb.cs156.organic.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import edu.ucsb.cs156.organic.entities.Staff;
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
+import edu.ucsb.cs156.organic.errors.StaffNotFoundException;
 import edu.ucsb.cs156.organic.models.CurrentUser;
 import edu.ucsb.cs156.organic.services.CurrentUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +39,7 @@ public abstract class ApiController {
     return map;
   }
 
-  @ExceptionHandler({ EntityNotFoundException.class })
+  @ExceptionHandler({ EntityNotFoundException.class, StaffNotFoundException.class })
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public Object handleGenericException(Throwable e) {
     return Map.of(
