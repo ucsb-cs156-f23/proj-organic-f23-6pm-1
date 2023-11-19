@@ -412,12 +412,12 @@ public class CoursesControllerTests extends ControllerTestCase {
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)
                                                 .with(csrf()))
-                                .andExpect(status().isNotFound()).andReturn();
+                                .andExpect(status().isForbidden()).andReturn();
 
                 // assert
                 verify(courseRepository, times(1)).findById(1L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("Staff with Github id 12345 not found in course staff of course id 1", json.get("message"));
+                assertEquals("User cgaucho is not authorized to update course 1", json.get("message"));
         }
 
         
