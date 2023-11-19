@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -219,7 +219,24 @@
 <a name='L154'></a><a href='#L154'>154</a>
 <a name='L155'></a><a href='#L155'>155</a>
 <a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,14 +256,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -375,7 +409,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Button, Form} from 'react-bootstrap';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Button, Form, Row, Col} from 'react-bootstrap';
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 &nbsp;
@@ -395,138 +429,155 @@ function CoursesForm({ initialContents, submitAction, buttonLabel = "Create" }) 
 &nbsp;
     const testIdPrefix = "CoursesForm";
 &nbsp;
-    // For explanation, see: https://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime
-    // Note that even this complex regex may still need some tweaks
-&nbsp;
-    // Stryker disable next-line Regex
-    const isodate_regex = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d)/i;
-    
-&nbsp;
     return (
         &lt;Form onSubmit={handleSubmit(submitAction)}&gt;
-&nbsp;
-            {initialContents &amp;&amp; (
-                &lt;Form.Group className="mb-3" &gt;
-                    &lt;Form.Label htmlFor="id"&gt;Id&lt;/Form.Label&gt;
-                    &lt;Form.Control
-                        data-testid={testIdPrefix + "-id"}
-                        id="id"
-                        type="text"
-                        {...register("id")}
-                        value={initialContents.id}
-                        disabled
-                    /&gt;
-                &lt;/Form.Group&gt;
-            )}
-&nbsp;
-            &lt;Form.Group className="mb-3" &gt;
-                &lt;Form.Label htmlFor="name"&gt;Name&lt;/Form.Label&gt;
-                &lt;Form.Control
-                    data-testid={testIdPrefix + "-name"}
-                    id="name"
-                    type="text"
-                    isInvalid={Boolean(errors.name)}
-                    {...register("name", {
-                        required: "Name is required.",
-                    })}
-                /&gt;
-                &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.name?.message}
-                &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
-&nbsp;
-            &lt;Form.Group className="mb-3" &gt;
-                &lt;Form.Label htmlFor="school"&gt;School&lt;/Form.Label&gt;
-                &lt;Form.Control
-                    data-testid={testIdPrefix + "-school"}
-                    id="school"
-                    type="text"
-                    isInvalid={Boolean(errors.school)}
-                    {...register("school", {
-                        required: "School is required."
-                    })}
-                /&gt;
-                &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.school?.message}
-                &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
-&nbsp;
-            &lt;Form.Group className="mb-3" &gt;
-                &lt;Form.Label htmlFor="term"&gt;Term&lt;/Form.Label&gt;
-                &lt;Form.Control
-                    data-testid={testIdPrefix + "-term"}
-                    id="term"
-                    type="text"
-                    isInvalid={Boolean(errors.term)}
-                    {...register("term", {
-                        required: "Term is required."
-                    })}
-                /&gt;
-                &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.term?.message}
-                &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
-&nbsp;
-            &lt;Form.Group className="mb-3" &gt;
-                    &lt;Form.Label htmlFor="start"&gt;Start (iso format)&lt;/Form.Label&gt;
-                    &lt;Form.Control
-                        data-testid={testIdPrefix + "-start"}
-                        id="start"
-                        type="datetime-local"
-                        isInvalid={Boolean(errors.start)}
-                        {...register("start", { required: true, pattern: isodate_regex })}
-                    /&gt;
-                    &lt;Form.Control.Feedback type="invalid"&gt;
-                        {errors.start &amp;&amp; 'Start is required. '}
-                    &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
-&nbsp;
-            &lt;Form.Group className="mb-3" &gt;
-                    &lt;Form.Label htmlFor="end"&gt;End (iso format)&lt;/Form.Label&gt;
-                    &lt;Form.Control
-                        data-testid={testIdPrefix + "-end"}
-                        id="end"
-                        type="datetime-local"
-                        isInvalid={Boolean(errors.end)}
-                        {...register("end", { required: true, pattern: isodate_regex })}
-                    /&gt;
-                    &lt;Form.Control.Feedback type="invalid"&gt;
-                        {errors.end &amp;&amp; 'End is required. '}
-                    &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
-&nbsp;
-            &lt;Form.Group className="mb-3" &gt;
-                &lt;Form.Label htmlFor="githubOrg"&gt;GithubOrg&lt;/Form.Label&gt;
-                &lt;Form.Control
-                    data-testid={testIdPrefix + "-githubOrg"}
-                    id="githubOrg"
-                    type="text"
-                    isInvalid={Boolean(errors.githubOrg)}
-                    {...register("githubOrg", {
-                        required: "GithubOrg is required."
-                    })}
-                /&gt;
-                &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.githubOrg?.message}
-                &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
-&nbsp;
-            &lt;Button
-                type="submit"
-                data-testid={testIdPrefix + "-submit"}
-            &gt;
-                {buttonLabel}
-            &lt;/Button&gt;
-            &lt;Button
-                variant="Secondary"
-                onClick={() =&gt; navigate(-1)}
-                data-testid={testIdPrefix + "-cancel"}
-            &gt;
-                Cancel
-            &lt;/Button&gt;
-&nbsp;
+            &lt;Row&gt;
+                &lt;Col&gt;
+                    {initialContents &amp;&amp; (
+                        &lt;Form.Group className="mb-3" &gt;
+                            &lt;Form.Label htmlFor="id"&gt;Id&lt;/Form.Label&gt;
+                            &lt;Form.Control
+                                data-testid={testIdPrefix + "-id"}
+                                id="id"
+                                type="text"
+                                {...register("id")}
+                                value={initialContents.id}
+                                disabled
+                            /&gt;
+                        &lt;/Form.Group&gt;
+                    )}
+                &lt;/Col&gt;
+            &lt;/Row&gt;
+            &lt;Row&gt;
+                &lt;Col&gt;
+                    &lt;Form.Group className="mb-3" &gt;
+                        &lt;Form.Label htmlFor="name"&gt;Name&lt;/Form.Label&gt;
+                        &lt;Form.Control
+                            data-testid={testIdPrefix + "-name"}
+                            id="name"
+                            type="text"
+                            isInvalid={Boolean(errors.name)}
+                            {...register("name", {
+                                required: "Name is required.",
+                            })}
+                        /&gt;
+                        &lt;Form.Control.Feedback type="invalid"&gt;
+                            {errors.name?.message}
+                        &lt;/Form.Control.Feedback&gt;
+                    &lt;/Form.Group&gt;
+                &lt;/Col&gt;
+            &lt;/Row&gt;
+            &lt;Row&gt;
+                &lt;Col&gt;
+                    &lt;Form.Group className="mb-3" &gt;
+                        &lt;Form.Label htmlFor="school"&gt;School&lt;/Form.Label&gt;
+                        &lt;Form.Control
+                            data-testid={testIdPrefix + "-school"}
+                            id="school"
+                            type="text"
+                            isInvalid={Boolean(errors.school)}
+                            {...register("school", {
+                                required: "School is required."
+                            })}
+                        /&gt;
+                        &lt;Form.Control.Feedback type="invalid"&gt;
+                            {errors.school?.message}
+                        &lt;/Form.Control.Feedback&gt;
+                    &lt;/Form.Group&gt;
+                &lt;/Col&gt;
+            &lt;/Row&gt;
+            &lt;Row&gt;
+                &lt;Col&gt;
+                    &lt;Form.Group className="mb-3" &gt;
+                        &lt;Form.Label htmlFor="term"&gt;Term&lt;/Form.Label&gt;
+                        &lt;Form.Control
+                            data-testid={testIdPrefix + "-term"}
+                            id="term"
+                            type="text"
+                            isInvalid={Boolean(errors.term)}
+                            {...register("term", {
+                                required: "Term is required."
+                            })}
+                        /&gt;
+                        &lt;Form.Control.Feedback type="invalid"&gt;
+                            {errors.term?.message}
+                        &lt;/Form.Control.Feedback&gt;
+                    &lt;/Form.Group&gt;
+                &lt;/Col&gt;
+            &lt;/Row&gt;
+            &lt;Row&gt;
+                &lt;Col&gt;
+                    &lt;Form.Group className="mb-3" &gt;
+                            &lt;Form.Label htmlFor="start"&gt;Start (iso format)&lt;/Form.Label&gt;
+                            &lt;Form.Control
+                                data-testid={testIdPrefix + "-start"}
+                                id="start"
+                                type="datetime-local"
+                                isInvalid={Boolean(errors.start)}
+                                {...register("start", { 
+                                    required: "Start is required." 
+                                })}
+                            /&gt;
+                            &lt;Form.Control.Feedback type="invalid"&gt;
+                                {errors.start?.message}
+                            &lt;/Form.Control.Feedback&gt;
+                    &lt;/Form.Group&gt;
+                &lt;/Col&gt;
+                &lt;Col&gt;
+                    &lt;Form.Group className="mb-3" &gt;
+                            &lt;Form.Label htmlFor="end"&gt;End (iso format)&lt;/Form.Label&gt;
+                            &lt;Form.Control
+                                data-testid={testIdPrefix + "-end"}
+                                id="end"
+                                type="datetime-local"
+                                isInvalid={Boolean(errors.end)}
+                                {...register("end", { 
+                                    required: "End is required." 
+                                })}
+                            /&gt;
+                            &lt;Form.Control.Feedback type="invalid"&gt;
+                                {errors.end?.message}
+                            &lt;/Form.Control.Feedback&gt;
+                    &lt;/Form.Group&gt;
+                &lt;/Col&gt;
+            &lt;/Row&gt;
+            &lt;Row&gt;
+                &lt;Col&gt;
+                    &lt;Form.Group className="mb-3" &gt;
+                        &lt;Form.Label htmlFor="githubOrg"&gt;GithubOrg&lt;/Form.Label&gt;
+                        &lt;Form.Control
+                            data-testid={testIdPrefix + "-githubOrg"}
+                            id="githubOrg"
+                            type="text"
+                            isInvalid={Boolean(errors.githubOrg)}
+                            {...register("githubOrg", {
+                                required: "GithubOrg is required."
+                            })}
+                        /&gt;
+                        &lt;Form.Control.Feedback type="invalid"&gt;
+                            {errors.githubOrg?.message}
+                        &lt;/Form.Control.Feedback&gt;
+                    &lt;/Form.Group&gt;
+                &lt;/Col&gt;
+            &lt;/Row&gt;
+            &lt;Row&gt;
+                &lt;Col&gt;
+                    &lt;Button
+                        type="submit"
+                        data-testid={testIdPrefix + "-submit"}
+                    &gt;
+                        {buttonLabel}
+                    &lt;/Button&gt;
+                    &lt;Button
+                        variant="Secondary"
+                        onClick={() =&gt; navigate(-1)}
+                        data-testid={testIdPrefix + "-cancel"}
+                    &gt;
+                        Cancel
+                    &lt;/Button&gt;
+                &lt;/Col&gt;
+            &lt;/Row&gt;
         &lt;/Form&gt;
-&nbsp;
     )
 }
 &nbsp;
@@ -538,7 +589,7 @@ export default CoursesForm;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Nov 19 2023 13:24:50 GMT-0800 (Pacific Standard Time)
+                at Sun Nov 19 2023 13:54:26 GMT-0800 (Pacific Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
