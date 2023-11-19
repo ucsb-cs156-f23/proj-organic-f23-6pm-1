@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.ucsb.cs156.organic.entities.Staff;
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
-import edu.ucsb.cs156.organic.errors.StaffNotFoundException;
 import edu.ucsb.cs156.organic.models.CurrentUser;
 import edu.ucsb.cs156.organic.services.CurrentUserService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -39,12 +39,27 @@ public abstract class ApiController {
 <span class="fc" id="L39">    return map;</span>
   }
 
-  @ExceptionHandler({ EntityNotFoundException.class, StaffNotFoundException.class })
+  @ExceptionHandler({ EntityNotFoundException.class })
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public Object handleGenericException(Throwable e) {
 <span class="fc" id="L45">    return Map.of(</span>
 <span class="fc" id="L46">      &quot;type&quot;, e.getClass().getSimpleName(),</span>
 <span class="fc" id="L47">      &quot;message&quot;, e.getMessage()</span>
+    );
+  }
+
+  /**
+   * Exception handler to return HTTP status code 403 Forbidden 
+   * when an AccessDeniedException is thrown
+   * @param e AccessDeniedException
+   * @return map with type and message
+   */
+  @ExceptionHandler({ AccessDeniedException.class })
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public Object handleAccessDeniedException(Throwable e) {
+<span class="fc" id="L60">    return Map.of(</span>
+<span class="fc" id="L61">      &quot;type&quot;, e.getClass().getSimpleName(),</span>
+<span class="fc" id="L62">      &quot;message&quot;, e.getMessage()</span>
     );
   }
 
@@ -55,23 +70,23 @@ public abstract class ApiController {
    * @return ObjectMapper mapper
    */
   public ObjectMapper getMapper() {
-<span class="fc" id="L58">    return mapper;</span>
+<span class="fc" id="L73">    return mapper;</span>
   }
 
-<span class="fc" id="L61">  public ApiController() {</span>
-<span class="fc" id="L62">   mapper = mapperThatIgnoresMockitoMocks();</span>
-<span class="fc" id="L63">  }</span>
+<span class="fc" id="L76">  public ApiController() {</span>
+<span class="fc" id="L77">   mapper = mapperThatIgnoresMockitoMocks();</span>
+<span class="fc" id="L78">  }</span>
 
   public static ObjectMapper mapperThatIgnoresMockitoMocks() {
-<span class="fc" id="L66">    ObjectMapper mapper = new ObjectMapper();</span>
-<span class="fc" id="L67">    mapper.registerModule(new JavaTimeModule());</span>
-<span class="fc" id="L68">    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {</span>
+<span class="fc" id="L81">    ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L82">    mapper.registerModule(new JavaTimeModule());</span>
+<span class="fc" id="L83">    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {</span>
       @Override
       public boolean hasIgnoreMarker(final AnnotatedMember m) {
-<span class="fc bfc" id="L71" title="All 4 branches covered.">        return super.hasIgnoreMarker(m) || m.getName().contains(&quot;Mockito&quot;);</span>
+<span class="fc bfc" id="L86" title="All 4 branches covered.">        return super.hasIgnoreMarker(m) || m.getName().contains(&quot;Mockito&quot;);</span>
       }
     });
-<span class="fc" id="L74">    return mapper;</span>
+<span class="fc" id="L89">    return mapper;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
