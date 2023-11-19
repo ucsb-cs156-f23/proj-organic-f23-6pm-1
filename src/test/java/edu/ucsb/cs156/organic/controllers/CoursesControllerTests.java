@@ -332,17 +332,14 @@ public class CoursesControllerTests extends ControllerTestCase {
         public void admin_can_edit_an_existing_course() throws Exception {
                 // arrange
 
-                User user1 = User.builder().githubId(12345).githubLogin("scottpchow23").build();
+                User currentUser = currentUserService.getCurrentUser().getUser();
 
                 Staff courseStaff1 = Staff.builder()
                                 .id(111L)
                                 .courseId(course1.getId())
-                                .githubId(user1.getGithubId())
-                                .user(user1)
+                                .githubId(currentUser.getGithubId())
+                                .user(currentUser)
                                 .build();
-
-                ArrayList<Staff> expectedCourseStaff = new ArrayList<>();
-                expectedCourseStaff.addAll(Arrays.asList(courseStaff1));
 
                 Course courseAfter = Course.builder()
                                 .id(1L)
@@ -357,7 +354,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                 String requestBody = mapper.writeValueAsString(courseAfter);
 
                 when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
-                when(courseStaffRepository.findByCourseId(eq(course1.getId()))).thenReturn(expectedCourseStaff);
+                when(courseStaffRepository.findByCourseIdAndGithubId(eq(course1.getId()),eq(courseStaff1.getGithubId()))).thenReturn(Optional.of(courseStaff1));
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -371,6 +368,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                 // assert
                 verify(courseRepository, times(1)).findById(1L);
                 verify(courseRepository, times(1)).save(courseAfter); // should be saved with correct user
+                verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(eq(course1.getId()),eq(courseStaff1.getGithubId()));
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(requestBody, responseString);
         }

@@ -32,6 +32,9 @@ import java.time.LocalDateTime;
 
 import javax.validation.Valid;
 
+import java.util.Optional;
+
+
 @Tag(name = "Courses")
 @RequestMapping("/api/courses")
 @RestController
@@ -146,20 +149,8 @@ public class CoursesController extends ApiController {
         User u = getCurrentUser().getUser();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
-        Iterable<Staff> courseStaff = courseStaffRepository.findByCourseId(courseId);
-
-        //check if the user is a staff member of the course
-        boolean isStaff = false;
-        for (Staff staff : courseStaff) {
-            //log.info("staffId: {}, uId: {}, {}", staff.getGithubId(), u.getGithubId(), staff.getGithubId() == u.getGithubId());
-            if (staff.getGithubId().equals(u.getGithubId())) {
-                isStaff = true;
-                break;
-            }
-        }
-
-        if(!isStaff)
-            throw new StaffNotFoundException(u.getGithubId(), courseId);
+        courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+        .orElseThrow(() -> new StaffNotFoundException(u.getGithubId(), courseId));
 
         course.setName(incoming.getName());
         course.setSchool(incoming.getSchool());
