@@ -63,6 +63,15 @@ public abstract class ApiController {
     );
   }
 
+  /**
+   * Generic message to return in a controller method
+   * @param message
+   * @return map with message
+   */
+  protected Object genericMessage(String message) {
+    return Map.of("message", message);
+  }
+
   private ObjectMapper mapper;
 
   /**

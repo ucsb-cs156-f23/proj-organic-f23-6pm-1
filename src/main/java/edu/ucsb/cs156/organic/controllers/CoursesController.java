@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -162,5 +163,22 @@ public class CoursesController extends ApiController {
 
         courseRepository.save(course);
         return course;
+    }
+
+    @Operation(summary = "Delete a course")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @DeleteMapping("/delete")
+    public Object deleteCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId) throws JsonProcessingException {
+        
+        User u = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+        .orElseThrow(() -> new AccessDeniedException(
+            String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
+
+        courseRepository.delete(course);
+        return genericMessage("Course with id %s deleted".formatted(courseId));
     }
 }
