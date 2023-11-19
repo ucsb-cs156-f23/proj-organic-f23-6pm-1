@@ -19,14 +19,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 
-
+import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
+
+import javax.validation.Valid;
+
+import java.util.Optional;
+
 
 @Tag(name = "Courses")
 @RequestMapping("/api/courses")
@@ -132,4 +139,28 @@ public class CoursesController extends ApiController {
         return courseStaff;
     }
 
+    @Operation(summary = "Update a course")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @PutMapping("/update")
+    public Course updateCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId,
+            @RequestBody @Valid Course incoming) throws JsonProcessingException {
+        
+        User u = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+        .orElseThrow(() -> new AccessDeniedException(
+            String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
+
+        course.setName(incoming.getName());
+        course.setSchool(incoming.getSchool());
+        course.setTerm(incoming.getTerm());
+        course.setStart(incoming.getStart());
+        course.setEnd(incoming.getEnd());
+        course.setGithubOrg(incoming.getGithubOrg());
+
+        courseRepository.save(course);
+        return course;
+    }
 }
