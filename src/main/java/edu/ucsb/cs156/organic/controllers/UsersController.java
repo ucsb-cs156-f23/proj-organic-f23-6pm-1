@@ -45,8 +45,8 @@ public class UsersController extends ApiController {
     @Operation(summary = "Toggle the admin status")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleAdmin")
-    public Object toggleAdmin( @Parameter(name = "id", description = "Integer, id number of user to toggle their admin status", example = "1", required = true) @RequestParam Integer id){
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
+    public Object toggleAdmin( @Parameter(name = "Github Id", description = "Integer, github id of user to toggle their admin status", example = "1", required = true) @RequestParam Integer id){
+        User user = userRepository.findByGithubId(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
         user.setAdmin(!user.isAdmin());
         userRepository.save(user);
         return Map.of("message", "User with id %s has toggled admin status to %s".formatted(id, user.isAdmin()));
@@ -55,8 +55,8 @@ public class UsersController extends ApiController {
     @Operation(summary = "Toggle the instructor status")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleInstructor")
-    public Object toggleInstructor( @Parameter(name = "id", description = "Integer, id number of user to toggle their instructor status", example = "1", required = true) @RequestParam Integer id){
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
+    public Object toggleInstructor( @Parameter(name = "Github Id", description = "Integer, github id of user to toggle their instructor status", example = "1", required = true) @RequestParam Integer id){
+        User user = userRepository.findByGithubId(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
         user.setInstructor(!user.isInstructor());
         userRepository.save(user);
         return Map.of("message", "User with id %s has toggled instructor status to %s".formatted(id, user.isInstructor()));
