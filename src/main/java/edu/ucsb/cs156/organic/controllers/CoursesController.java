@@ -151,9 +151,10 @@ public class CoursesController extends ApiController {
         User u = getCurrentUser().getUser();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
-        courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
-        .orElseThrow(() -> new AccessDeniedException(
-            String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
+        if(!u.isAdmin())
+            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            .orElseThrow(() -> new AccessDeniedException(
+                String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
 
         course.setName(incoming.getName());
         course.setSchool(incoming.getSchool());
@@ -176,9 +177,10 @@ public class CoursesController extends ApiController {
         User u = getCurrentUser().getUser();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
-        courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
-        .orElseThrow(() -> new AccessDeniedException(
-            String.format("User %s is not authorized to delete course %d", u.getGithubLogin(), courseId)));
+        if(!u.isAdmin())
+            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            .orElseThrow(() -> new AccessDeniedException(
+                String.format("User %s is not authorized to delete course %d", u.getGithubLogin(), courseId)));
 
         courseRepository.delete(course);
         courseStaffRepository.deleteByCourseId(courseId);
