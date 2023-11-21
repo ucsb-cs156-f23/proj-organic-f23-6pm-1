@@ -2,7 +2,7 @@ import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
-import { coursesFixture } from "fixtures/coursesFixtures";
+import { coursesFixtures } from "fixtures/coursesFixtures";
 import CoursesTable from "main/components/Courses/CoursesTable";
 
 
@@ -25,14 +25,14 @@ describe("UserTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <CoursesTable reviews={[]} currentUser={currentUser} />
+          <CoursesTable courses={[]} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
     );
 
-    const expectedHeaders = ["id", "ItemId", "Stars", "Reviewer Email", "Date Reviewed", "Comments"];
-    const expectedFields = ["id", "itemId", "stars", "reviewerEmail", "dateReviewed", "comments"];
-    const testId = "MenuItemReviewTable";
+    const expectedHeaders = ["id", "Course Name", "School", "Term", "Start Date", "End Date", "GitHub Org"];
+    const expectedFields = ["id", "name", "school", "term", "start", "end", "ghOrg"];
+    const testId = "coursesTable";
 
     // assert
     expectedHeaders.forEach((headerText) => {
@@ -50,19 +50,19 @@ describe("UserTable tests", () => {
 
     const currentUser = currentUserFixtures.userOnly;
 
-    console.log("list=", menuItemReviewFixtures.threeReviews)
+    console.log("list=", coursesFixtures.threeCourses)
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <MenuItemReviewTable reviews={menuItemReviewFixtures.threeReviews} currentUser={currentUser} />
+          <CoursesTable courses={coursesFixtures.threeCourses} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
     );
 
-    const expectedHeaders = ["id", "ItemId", "Stars", "Reviewer Email", "Date Reviewed", "Comments"];
-    const expectedFields = ["id", "itemId", "stars", "reviewerEmail", "dateReviewed", "comments"];
-    const testId = "MenuItemReviewTable";
+    const expectedHeaders = ["id", "Course Name", "School", "Term", "Start Date", "End Date", "GitHub Org"];
+    const expectedFields = ["id", "name", "school", "term", "start", "end", "ghOrg"];
+    const testId = "coursesTable";
 
     expectedHeaders.forEach((headerText) => {
       const header = screen.getByText(headerText);
@@ -74,19 +74,20 @@ describe("UserTable tests", () => {
       expect(header).toBeInTheDocument();
     });
 
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-itemId`)).toHaveTextContent("5");
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-stars`)).toHaveTextContent("4");
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-name`)).toHaveTextContent("CS156");
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-school`)).toHaveTextContent("UCSB");
 
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
-    expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
+    expect(screen.getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
 
-    const editButton = screen.queryByTestId(`${testId}-cell-row-0-col-Edit-button`);
+    //Implement tests when adding create, edit, delete pages
+    /*const editButton = screen.queryByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editButton).not.toBeInTheDocument();
 
     const deleteButton = screen.queryByTestId(`${testId}-cell-row-0-col-Delete-button`);
-    expect(deleteButton).not.toBeInTheDocument();
+    expect(deleteButton).not.toBeInTheDocument();*/
 
   });
 
@@ -97,15 +98,15 @@ describe("UserTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <MenuItemReviewTable reviews={menuItemReviewFixtures.threeReviews} currentUser={currentUser} />
+          <CoursesTable courses={coursesFixtures.threeCourses} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
     );
 
-    const expectedHeaders = ["id", "ItemId", "Stars", "Reviewer Email", "Date Reviewed", "Comments"];
-    const expectedFields = ["id", "itemId", "stars", "reviewerEmail", "dateReviewed", "comments"];
-    const testId = "MenuItemReviewTable";
+    const expectedHeaders = ["id", "Course Name", "School", "Term", "Start Date", "End Date", "GitHub Org"];
+    const expectedFields = ["id", "name", "school", "term", "start", "end", "ghOrg"];
+    const testId = "coursesTable";
 
     expectedHeaders.forEach((headerText) => {
       const header = screen.getByText(headerText);
@@ -117,19 +118,21 @@ describe("UserTable tests", () => {
       expect(header).toBeInTheDocument();
     });
 
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
-    expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
-
-    const editButton = screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`);
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
+    
+    //Implement tests when adding create, edit, delete pages
+    /*const editButton = screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editButton).toBeInTheDocument();
     expect(editButton).toHaveClass("btn-primary");
 
     const deleteButton = screen.getByTestId(`${testId}-cell-row-0-col-Delete-button`);
     expect(deleteButton).toBeInTheDocument();
-    expect(deleteButton).toHaveClass("btn-danger");
+    expect(deleteButton).toHaveClass("btn-danger");*/
 
   });
-
+//Implement tests when adding create, edit, delete pages
+/*
   test("Edit button navigates to the edit page for admin user", async () => {
 
     const currentUser = currentUserFixtures.adminUser;
@@ -137,16 +140,16 @@ describe("UserTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <MenuItemReviewTable reviews={menuItemReviewFixtures.threeReviews} currentUser={currentUser} />
+          <CoursesTable courses={coursesFixtures.threeCourses} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
     );
 
-    await waitFor(() => { expect(screen.getByTestId(`MenuItemReviewTable-cell-row-0-col-id`)).toHaveTextContent("2"); });
-    expect(screen.getByTestId(`MenuItemReviewTable-cell-row-0-col-itemId`)).toHaveTextContent("5");
+    await waitFor(() => { expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); });
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-itemId`)).toHaveTextContent("5");
 
-    const editButton = screen.getByTestId(`MenuItemReviewTable-cell-row-0-col-Edit-button`);
+    const editButton = screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editButton).toBeInTheDocument();
 
     fireEvent.click(editButton);
@@ -163,22 +166,22 @@ describe("UserTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <MenuItemReviewTable reviews={menuItemReviewFixtures.threeReviews} currentUser={currentUser} />
+          <CoursesTable courses={coursesFixtures.threeCourses} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
     );
 
-    const testId = "MenuItemReviewTable";
+    const testId = "coursesTable";
 
     // assert - check that the expected content is rendered
-    expect(await screen.findByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-itemId`)).toHaveTextContent("5");
+    expect(await screen.findByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-name`)).toHaveTextContent("CS156");
 
     const deleteButton = screen.getByTestId(`${testId}-cell-row-0-col-Delete-button`);
     expect(deleteButton).toBeInTheDocument();
 
     // act - click the delete button
     fireEvent.click(deleteButton);
-});
+});*/
 
 });

@@ -32,9 +32,9 @@ const columns = [
     },
 ];
 
-export default function CoursesTable({ course }) {
+export default function CoursesTable({ courses }) {
     return <OurTable
-        data={course}
+        data={courses}
         columns={columns}
         testid={"coursesTable"} />;
 };
