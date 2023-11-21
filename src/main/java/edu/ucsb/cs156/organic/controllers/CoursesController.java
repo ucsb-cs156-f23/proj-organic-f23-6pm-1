@@ -31,6 +31,7 @@ import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import java.util.Optional;
@@ -165,6 +166,7 @@ public class CoursesController extends ApiController {
         return course;
     }
 
+    @Transactional
     @Operation(summary = "Delete a course")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
     @DeleteMapping("/delete")
@@ -176,9 +178,10 @@ public class CoursesController extends ApiController {
                 .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
         courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
         .orElseThrow(() -> new AccessDeniedException(
-            String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
+            String.format("User %s is not authorized to delete course %d", u.getGithubLogin(), courseId)));
 
         courseRepository.delete(course);
+        courseStaffRepository.deleteByCourseId(courseId);
         return genericMessage("Course with id %s deleted".formatted(courseId));
     }
 }

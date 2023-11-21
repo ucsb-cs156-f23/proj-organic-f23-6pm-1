@@ -483,6 +483,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                 // assert
                 verify(courseRepository, times(1)).findById(1L);
                 verify(courseRepository, times(1)).delete(any()); // should see some delete
+                verify(courseStaffRepository, times(1)).deleteByCourseId(any());
                 verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(eq(course1.getId()),eq(courseStaff1.getGithubId()));
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("Course with id 1 deleted", json.get("message"));
@@ -517,7 +518,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                 // assert
                 verify(courseRepository, times(1)).findById(1L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("User cgaucho is not authorized to update course 1", json.get("message"));
+                assertEquals("User cgaucho is not authorized to delete course 1", json.get("message"));
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
