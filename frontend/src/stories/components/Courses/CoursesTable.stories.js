@@ -1,6 +1,5 @@
 import React from 'react';
-import { currentUserFixtures } from 'fixtures/currentUserFixtures';
-import CoursesTable from "main/components/Course/CourseTable";
+import CoursesTable from "main/components/Courses/CoursesTable";
 import { coursesFixtures } from 'fixtures/coursesFixtures';
 
 export default {
@@ -10,7 +9,7 @@ export default {
 
 const Template = (args) => {
     return (
-        <CourseTable {...args} />
+        <CoursesTable {...args} />
     )
 };
 
