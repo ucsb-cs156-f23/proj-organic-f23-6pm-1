@@ -75,8 +75,8 @@ import java.util.Optional;
         
 <span class="fc bfc" id="L76" title="All 2 branches covered.">        if(!u.isAdmin()){</span>
 <span class="fc" id="L77">                courseStaffRepository.findByCourseIdAndGithubId(id, u.getGithubId())</span>
-<span class="pc" id="L78">                        .orElseThrow(() -&gt; new AccessDeniedException(</span>
-<span class="nc" id="L79">                        String.format(&quot;User %s is not authorized to get course %d&quot;, u.getGithubLogin(), id)));</span>
+<span class="fc" id="L78">                        .orElseThrow(() -&gt; new AccessDeniedException(</span>
+<span class="fc" id="L79">                        String.format(&quot;User %s is not authorized to get course %d&quot;, u.getGithubLogin(), id)));</span>
         }
 <span class="fc" id="L81">        return course;</span>
     }
