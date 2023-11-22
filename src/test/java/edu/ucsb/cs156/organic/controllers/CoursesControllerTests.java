@@ -456,4 +456,79 @@ public class CoursesControllerTests extends ControllerTestCase {
 
         }
 
+        // Tests for GET /api/RecommendationRequest?id=...
+
+        @Test
+        public void logged_out_users_cannot_get_by_id() throws Exception {
+                mockMvc.perform(get("/api/courses?id=7"))
+                                .andExpect(status().is(403)); // logged out users can't get by id
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void test_that_admin_can_get_by_id_when_the_id_exists() throws Exception {
+
+                when(courseRepository.findById(eq(7L))).thenReturn(Optional.of(course1));
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/courses?id=7"))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+
+                verify(courseRepository, times(1)).findById(eq(7L));
+                String expectedJson = mapper.writeValueAsString(course1);
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(expectedJson, responseString);
+        }
+        
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void test_that_admin_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+
+                when(courseRepository.findById(eq(7L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/courses?id=7"))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+
+                verify(courseRepository, times(1)).findById(eq(7L));
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("EntityNotFoundException", json.get("type"));
+                assertEquals("Course with id 7 not found", json.get("message"));
+        }
+
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void nonadmin_staff_can_get_an_existing_course() throws Exception {
+                // arrange
+                User currentUser = currentUserService.getCurrentUser().getUser();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(course1.getId())
+                                .githubId(currentUser.getGithubId())
+                                .user(currentUser)
+                                .build();
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+                when(courseStaffRepository.findByCourseIdAndGithubId(eq(course1.getId()),
+                                eq(courseStaff1.getGithubId()))).thenReturn(Optional.of(courseStaff1));
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/courses?id=1"))
+                                .andExpect(status().isOk()).andReturn();
+
+
+                // assert
+                verify(courseRepository, times(1)).findById(eq(1L));
+                verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(eq(course1.getId()),
+                                eq(courseStaff1.getGithubId()));
+                String expectedJson = mapper.writeValueAsString(course1);
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(expectedJson, responseString);
+        }
+        
 }
