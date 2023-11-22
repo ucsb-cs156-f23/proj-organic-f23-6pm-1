@@ -82,12 +82,51 @@ describe("UserTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
     expect(screen.getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
 
-    //Implement tests when adding create, edit, delete pages
     const editButton = screen.queryByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editButton).not.toBeInTheDocument();
 
     const deleteButton = screen.queryByTestId(`${testId}-cell-row-0-col-Delete-button`);
     expect(deleteButton).not.toBeInTheDocument();
+
+  });
+
+  test("Has the expected colum headers and content for instructorUser", () => {
+
+    const currentUser = currentUserFixtures.instructorUser;
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <CoursesTable courses={coursesFixtures.threeCourses} currentUser={currentUser} />
+        </MemoryRouter>
+      </QueryClientProvider>
+
+    );
+
+    const expectedHeaders = ["id", "Course Name", "School", "Term", "Start Date", "End Date", "GitHub Org"];
+    const expectedFields = ["id", "name", "school", "term", "start", "end", "githubOrg"];
+    const testId = "CoursesTable";
+
+    expectedHeaders.forEach((headerText) => {
+      const header = screen.getByText(headerText);
+      expect(header).toBeInTheDocument();
+    });
+
+    expectedFields.forEach((field) => {
+      const header = screen.getByTestId(`${testId}-cell-row-0-col-${field}`);
+      expect(header).toBeInTheDocument();
+    });
+
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
+    
+    const editButton = screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`);
+    expect(editButton).toBeInTheDocument();
+    expect(editButton).toHaveClass("btn-primary");
+
+    const deleteButton = screen.getByTestId(`${testId}-cell-row-0-col-Delete-button`);
+    expect(deleteButton).toBeInTheDocument();
+    expect(deleteButton).toHaveClass("btn-danger");
 
   });
 
@@ -121,7 +160,6 @@ describe("UserTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
     expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
     
-    //Implement tests when adding create, edit, delete pages
     const editButton = screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editButton).toBeInTheDocument();
     expect(editButton).toHaveClass("btn-primary");
@@ -131,7 +169,6 @@ describe("UserTable tests", () => {
     expect(deleteButton).toHaveClass("btn-danger");
 
   });
-//Implement tests when adding create, edit, delete pages
 
   test("Edit button navigates to the edit page for admin user", async () => {
 
@@ -184,6 +221,6 @@ describe("UserTable tests", () => {
 
     // act - click the delete button
     fireEvent.click(deleteButton);
-});
+  });
 
 });
