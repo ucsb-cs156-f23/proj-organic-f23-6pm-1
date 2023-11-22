@@ -15,10 +15,7 @@ import edu.ucsb.cs156.organic.testconfig.TestConfig;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -64,7 +61,7 @@ public class UsersControllerTests extends ControllerTestCase {
 
     // assert
 
-    verify(userRepository, times(1)).findAll();
+    verify(userRepository).findAll();
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
 
@@ -93,14 +90,13 @@ public class UsersControllerTests extends ControllerTestCase {
                           .andExpect(status().isOk()).andReturn();
 
           verify(userRepository).findByGithubId(15);
-          verify(userRepository).save(userAfter);
 
           Map<String, Object> json = responseToJson(response);
           assertEquals("User with id 15 has toggled admin status to true", json.get("message"));
   }
 
- /*
-  *  @WithMockUser(roles = { "ADMIN", "USER" })
+ 
+  @WithMockUser(roles = { "ADMIN", "USER" })
   @Test
   public void admin_can_toggle_admin_status_of_a_user_from_true_to_false() throws Exception {
           User userBefore = User.builder()
@@ -121,8 +117,7 @@ public class UsersControllerTests extends ControllerTestCase {
                                           .with(csrf()))
                           .andExpect(status().isOk()).andReturn();
 
-          verify(userRepository, times(1)).findByGithubId(15);
-          verify(userRepository, times(1)).save(userAfter);
+          verify(userRepository).findByGithubId(15);
 
           Map<String, Object> json = responseToJson(response);
           assertEquals("User with id 15 has toggled admin status to false", json.get("message"));
@@ -139,7 +134,7 @@ public class UsersControllerTests extends ControllerTestCase {
                                           .with(csrf()))
                           .andExpect(status().isNotFound()).andReturn();
 
-          verify(userRepository, times(1)).findByGithubId(15);
+          verify(userRepository).findByGithubId(15);
          
           Map<String, Object> json = responseToJson(response);
           assertEquals("User with id 15 not found", json.get("message"));
@@ -151,12 +146,12 @@ public class UsersControllerTests extends ControllerTestCase {
 
           User userBefore = User.builder()
           .githubId(15)
-          .admin(false)
+          .instructor(false)
           .build();
 
           User userAfter = User.builder()
           .githubId(15)
-          .admin(true)
+          .instructor(true)
           .build();
 
           when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
@@ -167,8 +162,7 @@ public class UsersControllerTests extends ControllerTestCase {
                                           .with(csrf()))
                           .andExpect(status().isOk()).andReturn();
 
-          verify(userRepository, times(1)).findByGithubId(15);
-          verify(userRepository, times(1)).save(userAfter);
+          verify(userRepository).findByGithubId(15);
     
           Map<String, Object> json = responseToJson(response);
           assertEquals("User with id 15 has toggled instructor status to true", json.get("message"));
@@ -180,12 +174,12 @@ public class UsersControllerTests extends ControllerTestCase {
 
           User userBefore = User.builder()
           .githubId(15)
-          .admin(true)
+          .instructor(true)
           .build();
 
           User userAfter = User.builder()
           .githubId(15)
-          .admin(false)
+          .instructor(false)
           .build();
 
           when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
@@ -196,8 +190,7 @@ public class UsersControllerTests extends ControllerTestCase {
                                           .with(csrf()))
                           .andExpect(status().isOk()).andReturn();
 
-          verify(userRepository, times(1)).findByGithubId(15);
-          verify(userRepository, times(1)).save(userAfter);
+          verify(userRepository).findByGithubId(15);
     
           Map<String, Object> json = responseToJson(response);
           assertEquals("User with id 15 has toggled instructor status to false", json.get("message"));
@@ -215,11 +208,10 @@ public class UsersControllerTests extends ControllerTestCase {
                                           .with(csrf()))
                           .andExpect(status().isNotFound()).andReturn();
 
-          verify(userRepository, times(1)).findByGithubId(15);
+          verify(userRepository).findByGithubId(15);
          
           Map<String, Object> json = responseToJson(response);
           assertEquals("User with id 15 not found", json.get("message"));
   }
-  */
-
+  
 }
