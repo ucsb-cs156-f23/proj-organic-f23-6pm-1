@@ -530,5 +530,60 @@ public class CoursesControllerTests extends ControllerTestCase {
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
+         
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void nonadmin_nonstaff_cant_get_an_existing_course() throws Exception {
+                // arrange
+                User currentUser = currentUserService.getCurrentUser().getUser();
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/courses?id=1"))
+                                .andExpect(status().isForbidden()).andReturn();
+
+
+                // assert
+                verify(courseRepository, times(1)).findById(eq(1L));
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("AccessDeniedException", json.get("type"));
+                assertEquals(String.format("User %s is not authorized to get course 1", currentUser.getGithubLogin()), json.get("message"));
+        }
+        
+        /*
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void notadmin_notstaff_cannot_get_an_existing_course() throws Exception {
+                // arrange
+
+                User user1 = User.builder().githubId(24689).githubLogin("randomGithubUsername").build();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(1L)
+                                .githubId(user1.getGithubId())
+                                .user(user1)
+                                .build();
+
+                ArrayList<Staff> expectedCourseStaff = new ArrayList<>();
+                expectedCourseStaff.addAll(Arrays.asList(courseStaff1));
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+                when(courseStaffRepository.findByCourseIdAndGithubId(eq(course1.getId()),
+                                eq(courseStaff1.getGithubId()))).thenReturn(Optional.of(courseStaff1));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/courses?id=1")
+                                                .with(csrf()))
+                                .andExpect(status().isForbidden()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("User cgaucho is not authorized to get course 1", json.get("message"));
+        }
+        */
         
 }
