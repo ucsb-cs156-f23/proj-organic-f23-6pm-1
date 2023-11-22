@@ -1,11 +1,11 @@
-# ucsb-cs156/proj-organic
+# ucsb-cs156-f23/proj-organic-f23-6pm-1
 
 # Deployments
 
 | Type | Link       | 
 |------|------------|
-| prod | <https://organic.dokku-00.cs.ucsb.edu/>     | 
-| qa   | <https://organic-qa.dokku-00.cs.ucsb.edu/>  | 
+| prod | <https://organic.dokku-05.cs.ucsb.edu/>     | 
+| qa   | <https://organic-qa.dokku-05.cs.ucsb.edu/>  | 
 
 # Description
 
