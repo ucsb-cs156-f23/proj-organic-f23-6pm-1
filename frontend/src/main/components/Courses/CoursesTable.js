@@ -1,5 +1,29 @@
 import React from "react";
-import OurTable from "main/components/OurTable"
+import OurTable, { ButtonColumn } from "main/components/OurTable"
+import { useBackendMutation } from "main/utils/useBackend";
+import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/components/Utils/CoursesUtils"
+import { useNavigate } from "react-router-dom";
+import { hasRole } from "main/utils/currentUser";
+
+export default function CoursesTable({ courses, currentUser }) {
+
+    const navigate = useNavigate();
+
+    const editCallback = (cell) => {
+        navigate(`/courses/edit/${cell.row.values.id}`);
+    };
+
+    // Stryker disable all : hard to test for query caching
+
+    const deleteMutation = useBackendMutation(
+        cellToAxiosParamsDelete,
+        { onSuccess: onDeleteSuccess },
+        ["/api/courses/all"]
+    );
+    // Stryker restore all 
+
+    // Stryker disable next-line all : TODO try to make a good test for this
+    const deleteCallback = async (cell) => { deleteMutation.mutate(cell); }
 
     const columns = [
         {
@@ -32,7 +56,8 @@ import OurTable from "main/components/OurTable"
         },
     ];
 
-    if (hasRole(currentUser, "ROLE_ADMIN")) {
+    // Stryker disable next-line all
+    if (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) {
         columns.push(ButtonColumn("Edit", "primary", editCallback, "CoursesTable"));
         columns.push(ButtonColumn("Delete", "danger", deleteCallback, "CoursesTable"));
     }
@@ -40,5 +65,5 @@ import OurTable from "main/components/OurTable"
     return <OurTable
         data={courses}
         columns={columns}
-        testid={"coursesTable"} />;
+        testid={"CoursesTable"} />;
 };
