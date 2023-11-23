@@ -64,6 +64,24 @@ public class CoursesController extends ApiController {
         }
     }
 
+    @Operation(summary= "Get a single course")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("")
+    public Course getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        User u = getCurrentUser().getUser();
+
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, id));
+        
+        if(!u.isAdmin()){
+                courseStaffRepository.findByCourseIdAndGithubId(id, u.getGithubId())
+                        .orElseThrow(() -> new AccessDeniedException(
+                        String.format("User %s is not authorized to get course %d", u.getGithubLogin(), id)));
+        }
+        return course;
+    }
+
     @Operation(summary = "Create a new course")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -176,4 +194,6 @@ public class CoursesController extends ApiController {
         courseRepository.save(course);
         return course;
     }
+
+    
 }
