@@ -19,6 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -140,6 +141,18 @@ public class CoursesController extends ApiController {
         log.info("courseStaff={}", courseStaff);
 
         return courseStaff;
+    }
+
+    @Operation(summary = "Remove staff from a course")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/staff")
+    public Object deleteStaff(
+            @Parameter(name = "id") @RequestParam Long id) {
+        Staff staff = courseStaffRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Staff.class, id.toString()));
+
+        courseStaffRepository.delete(staff);
+        return genericMessage("Staff with id %s deleted".formatted(id));
     }
 
     @Operation(summary = "Get Staff for course")
