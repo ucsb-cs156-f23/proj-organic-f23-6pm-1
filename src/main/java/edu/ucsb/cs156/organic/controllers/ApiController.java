@@ -19,19 +19,42 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.Map;
 
+/**
+ * Base class for all API controllers.  Provides a getCurrentUser() method
+ * and a genericMessage() method.
+ */
+ */
+
 @Slf4j
 public abstract class ApiController {
   @Autowired
   private CurrentUserService currentUserService;
 
+  /**
+   * Returns the current user, or null if no user is logged in.
+   * @return CurrentUser current user or null
+   */
   protected CurrentUser getCurrentUser() {
     return currentUserService.getCurrentUser();
   }
 
+  /*
+   * Returns a generic message in the form of a Map 
+   * with a single key/value pair
+   * 
+   * @param message the message to be returned
+   * @return Map with a single key/value pair
+   */
   protected Object genericMessage(String message) {
     return Map.of("message", message);
   }
   
+  /**
+   * Exception handler to return HTTP status code 400 Bad Request
+   * when an IllegalArgumentException is thrown
+   * @param e IllegalArgumentException
+   * @return map with type and message
+   */
   @ExceptionHandler({ IllegalArgumentException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Object handleIllegalArgumentException(Throwable e) {
@@ -43,6 +66,12 @@ public abstract class ApiController {
     return map;
   }
 
+  /**
+   * Exception handler to return HTTP status code 404 Not Found
+   * when an EntityNotFoundException is thrown
+   * @param e EntityNotFoundException
+   * @return map with type and message
+   */
   @ExceptionHandler({ EntityNotFoundException.class })
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public Object handleGenericException(Throwable e) {
@@ -77,10 +106,19 @@ public abstract class ApiController {
     return mapper;
   }
 
+  /**
+   * Constructor that initializes the ObjectMapper
+   */
+
   public ApiController() {
    mapper = mapperThatIgnoresMockitoMocks();
   }
 
+  /**
+   * Special ObjectMapper that ignores Mockito mocks
+   * @return ObjectMapper mapper
+   */
+  
   public static ObjectMapper mapperThatIgnoresMockitoMocks() {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
