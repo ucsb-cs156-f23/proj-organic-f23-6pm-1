@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Base class for all API controllers.  Provides a getCurrentUser() method
  * and a genericMessage() method.
- */
+ *
  */
 
 @Slf4j
@@ -118,7 +118,7 @@ public abstract class ApiController {
    * Special ObjectMapper that ignores Mockito mocks
    * @return ObjectMapper mapper
    */
-  
+
   public static ObjectMapper mapperThatIgnoresMockitoMocks() {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
