@@ -27,10 +27,6 @@ public abstract class ApiController {
   protected CurrentUser getCurrentUser() {
     return currentUserService.getCurrentUser();
   }
-
-  protected Object genericMessage(String message) {
-    return Map.of("message", message);
-  }
   
   @ExceptionHandler({ IllegalArgumentException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -65,6 +61,15 @@ public abstract class ApiController {
       "type", e.getClass().getSimpleName(),
       "message", e.getMessage()
     );
+  }
+
+  /**
+   * Generic message to return in a controller method
+   * @param message
+   * @return map with message
+   */
+  protected Object genericMessage(String message) {
+    return Map.of("message", message);
   }
 
   private ObjectMapper mapper;
