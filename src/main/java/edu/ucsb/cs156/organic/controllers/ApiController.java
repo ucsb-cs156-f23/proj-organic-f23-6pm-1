@@ -27,10 +27,6 @@ public abstract class ApiController {
   protected CurrentUser getCurrentUser() {
     return currentUserService.getCurrentUser();
   }
-
-  protected Object genericMessage(String message) {
-    return Map.of("message", message);
-  }
   
   @ExceptionHandler({ IllegalArgumentException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
