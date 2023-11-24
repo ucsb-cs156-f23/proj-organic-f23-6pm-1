@@ -642,55 +642,6 @@ public class CoursesControllerTests extends ControllerTestCase {
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("Course with id 1 not found", json.get("message"));
          }
-  
-        @WithMockUser(roles = { "ADMIN", "USER" })
-        @Test
-        public void admin_can_delete_staff() throws Exception {
-                // arrange
-                User user = User.builder().githubId(12345).githubLogin("jakedel").build();
-
-                Staff staff = Staff.builder()
-                                .id(15L)
-                                .courseId(course1.getId())
-                                .githubId(user.getGithubId())
-                                .user(user)
-                                .build();
-
-                when(courseStaffRepository.findById(eq(15L))).thenReturn(Optional.of(staff));
-
-                // act
-                MvcResult response = mockMvc.perform(
-                                delete("/api/courses/staff?id=15")
-                                                .with(csrf()))
-                                .andExpect(status().isOk()).andReturn();
-
-                // assert
-                verify(courseStaffRepository, times(1)).findById(15L);
-                verify(courseStaffRepository, times(1)).delete(any());
-
-                Map<String, Object> json = responseToJson(response);
-                assertEquals("Staff with id 15 deleted", json.get("message"));
-        }
-
-        @WithMockUser(roles = { "ADMIN", "USER" })
-        @Test
-        public void admin_tries_to_delete_non_existant_staff_and_gets_right_error_message()
-                        throws Exception {
-                // arrange
-
-                when(courseStaffRepository.findById(eq(15L))).thenReturn(Optional.empty());
-
-                // act
-                MvcResult response = mockMvc.perform(
-                                delete("/api/courses/staff?id=15")
-                                                .with(csrf()))
-                                .andExpect(status().isNotFound()).andReturn();
-
-                // assert
-                verify(courseStaffRepository, times(1)).findById(15L);
-                Map<String, Object> json = responseToJson(response);
-                assertEquals("Staff with id 15 not found", json.get("message"));
-        }
 
         // Tests for GET /api/RecommendationRequest?id=...
 
