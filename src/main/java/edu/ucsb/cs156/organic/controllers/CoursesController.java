@@ -149,7 +149,7 @@ public class CoursesController extends ApiController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
     @DeleteMapping("/staff")
     public Object deleteStaff(
-            @Parameter(name = "id") @RequestParam Long id) {
+            @Parameter(name = "id") @RequestParam Long id) throws JsonProcessingException {
         // Find staff member from id (also includes associated data like which course(s) they're staff in)
         Staff staff = courseStaffRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Staff.class, id.toString()));
@@ -158,9 +158,10 @@ public class CoursesController extends ApiController {
         User u = getCurrentUser().getUser();
         if (!u.isAdmin()) {
                 Long courseId = staff.getCourseId();
+                log.info("staff={}\nthe parameter id={}", staff, id);
                 courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId()) // This find will succeed if the condition mentioned above is met
                 .orElseThrow(() -> new AccessDeniedException( // Throw an error if find fails (so, if they aren't in the same course)
-                        String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
+                        String.format("User %s is not authorized to delete staff of id %d", u.getGithubLogin(), id)));
         }
 
         courseStaffRepository.delete(staff);
