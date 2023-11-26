@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,7 @@ import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import java.util.Optional;
@@ -180,9 +182,10 @@ public class CoursesController extends ApiController {
         User u = getCurrentUser().getUser();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
-        courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
-        .orElseThrow(() -> new AccessDeniedException(
-            String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
+        if(!u.isAdmin())
+            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            .orElseThrow(() -> new AccessDeniedException(
+                String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
 
         course.setName(incoming.getName());
         course.setSchool(incoming.getSchool());
@@ -195,5 +198,23 @@ public class CoursesController extends ApiController {
         return course;
     }
 
-    
+    @Transactional
+    @Operation(summary = "Delete a course")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @DeleteMapping("/delete")
+    public Object deleteCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId) throws JsonProcessingException {
+        
+        User u = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        if(!u.isAdmin())
+            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            .orElseThrow(() -> new AccessDeniedException(
+                String.format("User %s is not authorized to delete course %d", u.getGithubLogin(), courseId)));
+
+        courseRepository.delete(course);
+        courseStaffRepository.deleteByCourseId(courseId);
+        return genericMessage("Course with id %s deleted".formatted(courseId));
+    }
 }

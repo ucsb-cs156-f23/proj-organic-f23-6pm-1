@@ -38,16 +38,6 @@ public abstract class ApiController {
     return currentUserService.getCurrentUser();
   }
 
-  /*
-   * Returns a generic message in the form of a Map 
-   * with a single key/value pair
-   * 
-   * @param message the message to be returned
-   * @return Map with a single key/value pair
-   */
-  protected Object genericMessage(String message) {
-    return Map.of("message", message);
-  }
   
   /**
    * Exception handler to return HTTP status code 400 Bad Request
@@ -94,6 +84,15 @@ public abstract class ApiController {
       "type", e.getClass().getSimpleName(),
       "message", e.getMessage()
     );
+  }
+
+  /**
+   * Generic message to return in a controller method
+   * @param message
+   * @return map with message
+   */
+  protected Object genericMessage(String message) {
+    return Map.of("message", message);
   }
 
   private ObjectMapper mapper;
