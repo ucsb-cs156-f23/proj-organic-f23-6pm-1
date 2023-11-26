@@ -149,22 +149,23 @@ import java.util.Optional;
     @PreAuthorize(&quot;hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')&quot;)
     @DeleteMapping(&quot;/staff&quot;)
     public Object deleteStaff(
-            @Parameter(name = &quot;id&quot;) @RequestParam Long id) {
+            @Parameter(name = &quot;id&quot;) @RequestParam Long id) throws JsonProcessingException {
         // Find staff member from id (also includes associated data like which course(s) they're staff in)
 <span class="fc" id="L154">        Staff staff = courseStaffRepository.findById(id)</span>
 <span class="fc" id="L155">                .orElseThrow(() -&gt; new EntityNotFoundException(Staff.class, id.toString()));</span>
         
         // If instructor and not admin, check if user is staff in the same course of the staff member they're trying to remove
 <span class="fc" id="L158">        User u = getCurrentUser().getUser();</span>
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if (!u.isAdmin()) {</span>
-<span class="nc" id="L160">                Long courseId = staff.getCourseId();</span>
-<span class="nc" id="L161">                courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId()) // This find will succeed if the condition mentioned above is met</span>
-<span class="nc" id="L162">                .orElseThrow(() -&gt; new AccessDeniedException( // Throw an error if find fails (so, if they aren't in the same course)</span>
-<span class="nc" id="L163">                        String.format(&quot;User %s is not authorized to update course %d&quot;, u.getGithubLogin(), courseId)));</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (!u.isAdmin()) {</span>
+<span class="fc" id="L160">                Long courseId = staff.getCourseId();</span>
+<span class="fc" id="L161">                log.info(&quot;staff={}\nthe parameter id={}&quot;, staff, id);</span>
+<span class="fc" id="L162">                courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId()) // This find will succeed if the condition mentioned above is met</span>
+<span class="fc" id="L163">                .orElseThrow(() -&gt; new AccessDeniedException( // Throw an error if find fails (so, if they aren't in the same course)</span>
+<span class="fc" id="L164">                        String.format(&quot;User %s is not authorized to delete staff of id %d&quot;, u.getGithubLogin(), id)));</span>
         }
 
-<span class="fc" id="L166">        courseStaffRepository.delete(staff);</span>
-<span class="fc" id="L167">        return genericMessage(&quot;Staff with id %s deleted&quot;.formatted(id));</span>
+<span class="fc" id="L167">        courseStaffRepository.delete(staff);</span>
+<span class="fc" id="L168">        return genericMessage(&quot;Staff with id %s deleted&quot;.formatted(id));</span>
     }
 
     @Operation(summary = &quot;Get Staff for course&quot;)
@@ -175,11 +176,11 @@ import java.util.Optional;
     )
             throws JsonProcessingException {
 
-<span class="fc" id="L178">        Course course = courseRepository.findById(courseId)</span>
-<span class="fc" id="L179">                .orElseThrow(() -&gt; new EntityNotFoundException(Course.class, courseId.toString()));</span>
+<span class="fc" id="L179">        Course course = courseRepository.findById(courseId)</span>
+<span class="fc" id="L180">                .orElseThrow(() -&gt; new EntityNotFoundException(Course.class, courseId.toString()));</span>
 
-<span class="fc" id="L181">        Iterable&lt;Staff&gt; courseStaff = courseStaffRepository.findByCourseId(course.getId());</span>
-<span class="fc" id="L182">        return courseStaff;</span>
+<span class="fc" id="L182">        Iterable&lt;Staff&gt; courseStaff = courseStaffRepository.findByCourseId(course.getId());</span>
+<span class="fc" id="L183">        return courseStaff;</span>
     }
 
     @Operation(summary = &quot;Update a course&quot;)
@@ -189,23 +190,23 @@ import java.util.Optional;
             @Parameter(name = &quot;courseId&quot;) @RequestParam Long courseId,
             @RequestBody @Valid Course incoming) throws JsonProcessingException {
         
-<span class="fc" id="L192">        User u = getCurrentUser().getUser();</span>
-<span class="fc" id="L193">        Course course = courseRepository.findById(courseId)</span>
-<span class="fc" id="L194">                .orElseThrow(() -&gt; new EntityNotFoundException(Course.class, courseId.toString()));</span>
-<span class="fc bfc" id="L195" title="All 2 branches covered.">        if(!u.isAdmin())</span>
-<span class="fc" id="L196">            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())</span>
-<span class="fc" id="L197">            .orElseThrow(() -&gt; new AccessDeniedException(</span>
-<span class="fc" id="L198">                String.format(&quot;User %s is not authorized to update course %d&quot;, u.getGithubLogin(), courseId)));</span>
+<span class="fc" id="L193">        User u = getCurrentUser().getUser();</span>
+<span class="fc" id="L194">        Course course = courseRepository.findById(courseId)</span>
+<span class="fc" id="L195">                .orElseThrow(() -&gt; new EntityNotFoundException(Course.class, courseId.toString()));</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        if(!u.isAdmin())</span>
+<span class="fc" id="L197">            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())</span>
+<span class="fc" id="L198">            .orElseThrow(() -&gt; new AccessDeniedException(</span>
+<span class="fc" id="L199">                String.format(&quot;User %s is not authorized to update course %d&quot;, u.getGithubLogin(), courseId)));</span>
 
-<span class="fc" id="L200">        course.setName(incoming.getName());</span>
-<span class="fc" id="L201">        course.setSchool(incoming.getSchool());</span>
-<span class="fc" id="L202">        course.setTerm(incoming.getTerm());</span>
-<span class="fc" id="L203">        course.setStart(incoming.getStart());</span>
-<span class="fc" id="L204">        course.setEnd(incoming.getEnd());</span>
-<span class="fc" id="L205">        course.setGithubOrg(incoming.getGithubOrg());</span>
+<span class="fc" id="L201">        course.setName(incoming.getName());</span>
+<span class="fc" id="L202">        course.setSchool(incoming.getSchool());</span>
+<span class="fc" id="L203">        course.setTerm(incoming.getTerm());</span>
+<span class="fc" id="L204">        course.setStart(incoming.getStart());</span>
+<span class="fc" id="L205">        course.setEnd(incoming.getEnd());</span>
+<span class="fc" id="L206">        course.setGithubOrg(incoming.getGithubOrg());</span>
 
-<span class="fc" id="L207">        courseRepository.save(course);</span>
-<span class="fc" id="L208">        return course;</span>
+<span class="fc" id="L208">        courseRepository.save(course);</span>
+<span class="fc" id="L209">        return course;</span>
     }
 
     @Transactional
@@ -215,17 +216,17 @@ import java.util.Optional;
     public Object deleteCourse(
             @Parameter(name = &quot;courseId&quot;) @RequestParam Long courseId) throws JsonProcessingException {
         
-<span class="fc" id="L218">        User u = getCurrentUser().getUser();</span>
-<span class="fc" id="L219">        Course course = courseRepository.findById(courseId)</span>
-<span class="fc" id="L220">                .orElseThrow(() -&gt; new EntityNotFoundException(Course.class, courseId.toString()));</span>
-<span class="fc bfc" id="L221" title="All 2 branches covered.">        if(!u.isAdmin())</span>
-<span class="fc" id="L222">            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())</span>
-<span class="fc" id="L223">            .orElseThrow(() -&gt; new AccessDeniedException(</span>
-<span class="fc" id="L224">                String.format(&quot;User %s is not authorized to delete course %d&quot;, u.getGithubLogin(), courseId)));</span>
+<span class="fc" id="L219">        User u = getCurrentUser().getUser();</span>
+<span class="fc" id="L220">        Course course = courseRepository.findById(courseId)</span>
+<span class="fc" id="L221">                .orElseThrow(() -&gt; new EntityNotFoundException(Course.class, courseId.toString()));</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        if(!u.isAdmin())</span>
+<span class="fc" id="L223">            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())</span>
+<span class="fc" id="L224">            .orElseThrow(() -&gt; new AccessDeniedException(</span>
+<span class="fc" id="L225">                String.format(&quot;User %s is not authorized to delete course %d&quot;, u.getGithubLogin(), courseId)));</span>
 
-<span class="fc" id="L226">        courseRepository.delete(course);</span>
-<span class="fc" id="L227">        courseStaffRepository.deleteByCourseId(courseId);</span>
-<span class="fc" id="L228">        return genericMessage(&quot;Course with id %s deleted&quot;.formatted(courseId));</span>
+<span class="fc" id="L227">        courseRepository.delete(course);</span>
+<span class="fc" id="L228">        courseStaffRepository.deleteByCourseId(courseId);</span>
+<span class="fc" id="L229">        return genericMessage(&quot;Course with id %s deleted&quot;.formatted(courseId));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
