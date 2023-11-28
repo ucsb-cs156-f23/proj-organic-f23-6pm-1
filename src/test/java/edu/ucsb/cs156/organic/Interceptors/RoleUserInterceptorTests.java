@@ -59,6 +59,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
         Set<GrantedAuthority> fakeAuthorities = new HashSet<>();
         fakeAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         fakeAuthorities.add(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"));
+        fakeAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         OAuth2User mockUser = new DefaultOAuth2User(fakeAuthorities, attributes, "githubLogin");
         Authentication authentication = new OAuth2AuthenticationToken(mockUser, fakeAuthorities , "mockUserRegisterId");
