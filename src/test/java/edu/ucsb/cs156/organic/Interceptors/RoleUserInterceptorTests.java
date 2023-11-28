@@ -102,8 +102,10 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
         verify(userRepository, times(1)).findByGithubId(123456);
         boolean hasAdminRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
         boolean hasInstructorRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_INSTRUCTOR"));
+        boolean hasUserRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"));
         assertTrue(hasAdminRole, "ROLE_ADMIN should exist in authorities");
         assertTrue(hasInstructorRole, "ROLE_INSTRUCTOR should exist in authorities");
+        assertTrue(hasUserRole, "ROLE_USER should exist in authorities");
     }
 
     @Test
@@ -139,8 +141,10 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
         verify(userRepository, times(1)).findByGithubId(123456);
         boolean hasAdminRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
         boolean hasInstructorRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_INSTRUCTOR"));
+        boolean hasUserRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"));
         assertFalse(hasAdminRole, "ROLE_ADMIN should be removed from authorities");
         assertTrue(hasInstructorRole, "ROLE_INSTRUCTOR should exist in authorities");
+        assertTrue(hasUserRole, "ROLE_USER should exist in authorities");
     }
 
     @Test
@@ -176,7 +180,10 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
         verify(userRepository, times(1)).findByGithubId(123456);
         boolean hasAdminRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
         boolean hasInstructorRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_INSTRUCTOR"));
+        boolean hasUserRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"));
         assertTrue(hasAdminRole, "ROLE_ADMIN should exist in authorities");
         assertFalse(hasInstructorRole, "ROLE_INSTRUCTOR should be removed from authorities");
+        assertTrue(hasUserRole, "ROLE_USER should exist in authorities");
+        
     }
 }
