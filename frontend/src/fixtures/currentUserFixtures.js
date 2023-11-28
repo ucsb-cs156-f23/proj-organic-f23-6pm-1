@@ -136,6 +136,70 @@ const apiCurrentUserFixtures = {
 
 
     },
+    instructorUser: {
+        "user":
+        {
+            "githubId": 1119018,
+            "githubNodeId": "MDQ6VXNlcjExMTkwMTc=",
+            "githubLogin": "cgaucho",
+            "email": "cgaucho@cs.ucsb.edu",
+            "pictureUrl": "https://avatars.githubusercontent.com/u/1119017?v=4",
+            "fullName": "Chris Gaucho",
+            "emailVerified": true,
+            "admin": false,
+            "instructor": true,
+            "accessToken": "ghu_Du4W9ThisIsNotARealTokenEither1w9SuT",
+            "emails": [{
+                "email": "cgaucho@cs.ucsb.edu",
+                "githubId": 1119018
+            },
+            ],
+            "lastOnline": "2023-11-09T21:06:11.131913Z"
+        },
+        "roles": [
+            { "authority": "SCOPE_email" },
+            {
+                "authority": "ROLE_USER",
+                "attributes": {
+                    "login": "cgaucho",
+                    "id": 1119018,
+                    "node_id": "MDQ6VXNlcjExMTkwMTc=",
+                    "avatar_url": "https://avatars.githubusercontent.com/u/1119017?v=4",
+                    "gravatar_id": "",
+                    "url": "https://api.github.com/users/cgaucho",
+                    "html_url": "https://github.com/cgaucho",
+                    "followers_url": "https://api.github.com/users/cgaucho/followers",
+                    "following_url": "https://api.github.com/users/cgaucho/following{/other_user}",
+                    "gists_url": "https://api.github.com/users/cgaucho/gists{/gist_id}",
+                    "starred_url": "https://api.github.com/users/cgaucho/starred{/owner}{/repo}",
+                    "subscriptions_url": "https://api.github.com/users/cgaucho/subscriptions",
+                    "organizations_url": "https://api.github.com/users/cgaucho/orgs",
+                    "repos_url": "https://api.github.com/users/cgaucho/repos",
+                    "events_url": "https://api.github.com/users/cgaucho/events{/privacy}",
+                    "received_events_url": "https://api.github.com/users/cgaucho/received_events",
+                    "type": "User",
+                    "site_admin": false,
+                    "name": "Chris Gaucho",
+                    "company": "UC Santa Barbara",
+                    "blog": "http://www.cs.ucsb.edu/~cgaucho",
+                    "location": "Santa Barbara, CA",
+                    "email": null,
+                    "hireable": null,
+                    "bio": null,
+                    "twitter_username": null,
+                    "public_repos": 267,
+                    "public_gists": 1,
+                    "followers": 81,
+                    "following": 12,
+                    "created_at": "2011-10-11T09:33:28Z",
+                    "updated_at": "2023-11-08T20:14:48Z"
+                }
+            },
+            { "authority": "SCOPE_profile" }]
+
+
+
+    },
 };
 
 const currentUserFixtures = {

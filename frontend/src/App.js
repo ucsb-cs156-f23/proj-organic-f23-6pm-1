@@ -6,6 +6,7 @@ import LoadingPage from "main/pages/LoadingPage";
 import LoginPage from "main/pages/LoginPage";
 import ProfilePage from "main/pages/ProfilePage";
 
+import CourseIndexPage from "main/pages/Courses/CoursesCreatePage";
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
 
@@ -31,6 +32,10 @@ function App() {
   const homeRoute = (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_USER")) 
     ? <Route path="/" element={<HomePage />} /> 
     : <Route path="/" element={<LoginPage />} />;
+
+  const courseRoute = (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) 
+    ? <Route path="/courses" element={<CourseIndexPage />} /> 
+    : null;
 
   /*  Display the LoadingPage while awaiting currentUser 
       response to prevent the NotFoundPage from displaying */
@@ -66,6 +71,7 @@ function App() {
           {homeRoute}
           {adminRoutes}
           {userRoutes}
+          {courseRoute}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}
