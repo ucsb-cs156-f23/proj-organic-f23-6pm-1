@@ -52,6 +52,10 @@ describe("ProfilePage tests", () => {
         expect(screen.getByTestId("UsersTable-cell-row-0-col-githubLogin")).toBeInTheDocument();
         expect(screen.getByTestId("UsersTable-cell-row-0-col-githubLogin")).toHaveTextContent("cgaucho");
 
+        const testId = "UsersTable";
+
+        expect(screen.queryByTestId(`${testId}-cell-row-0-col-toggle-admin-button`)).not.toBeInTheDocument();
+        expect(screen.queryByTestId(`${testId}-cell-row-0-col-toggle-instructor-button`)).not.toBeInTheDocument();
     });
 
     test("renders correctly for admin user from UCSB", async () => {
