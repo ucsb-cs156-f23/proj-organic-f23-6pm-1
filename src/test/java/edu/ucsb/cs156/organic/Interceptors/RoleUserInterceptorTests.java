@@ -52,9 +52,9 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "cap@ucsb.edu");
         attributes.put("githubId", 123456);
-        attributes.put("githubLogin", "cap105")
-        attributes.put("fullName", "Cap Lee")
-        attributes.put("emailVerified", true)
+        attributes.put("githubLogin", "cap105");
+        attributes.put("fullName", "Cap Lee");
+        attributes.put("emailVerified", true);
 
         Set<GrantedAuthority> fakeAuthorities = new HashSet<>();
         fakeAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
