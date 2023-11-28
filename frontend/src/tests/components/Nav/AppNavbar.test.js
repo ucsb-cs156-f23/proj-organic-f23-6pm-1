@@ -62,7 +62,6 @@ describe("AppNavbar tests", () => {
         expect(link.getAttribute("href")).toBe("/courses");
     });
 
-    /*
         test("renders the Course link for instructors", async () => {
         
         const currentUser = currentUserFixtures.instructorUser;
@@ -83,7 +82,7 @@ describe("AppNavbar tests", () => {
         expect(link).toBeInTheDocument();
         expect(link.getAttribute("href")).toBe("/courses");
     })
-    */
+    
 
     test("doesnt render the Course link for non admin/instructor", async () => {
         
