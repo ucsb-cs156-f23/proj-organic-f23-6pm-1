@@ -41,8 +41,8 @@ describe("AdminUsersPage tests",  () => {
         const testId = "UsersTable";
         expect(await screen.findByText("Users")).toBeInTheDocument();
         expect(screen.getByTestId(`${testId}-cell-row-0-col-githubLogin`)).toHaveTextContent("pconrad");
-        expect(await screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`)).toHaveTextContent("toggle-admin");
-        expect(await screen.getByTestId(`${testId}-cell-row-0-col-toggle-instructor-button`)).toHaveTextContent("toggle-instructor");
+        expect(screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`)).toHaveTextContent("toggle-admin");
+        expect(screen.getByTestId(`${testId}-cell-row-0-col-toggle-instructor-button`)).toHaveTextContent("toggle-instructor");
         expect(screen.getByTestId(`${testId}-cell-row-1-col-admin`)).toHaveTextContent("false");
         expect(screen.getByTestId(`${testId}-cell-row-1-col-instructor`)).toHaveTextContent("true");
     });
@@ -57,22 +57,20 @@ describe("AdminUsersPage tests",  () => {
         );
         const testId = "UsersTable";
 
-        const secondRowAdminButton = await screen.getByTestId(`${testId}-cell-row-1-col-toggle-admin-button`);
+        const secondRowAdminButton = screen.getByTestId(`${testId}-cell-row-1-col-toggle-admin-button`);
         expect(secondRowAdminButton).toHaveTextContent("toggle-admin");
         fireEvent.click(secondRowAdminButton);
 
-        await waitFor(() => {
-            expect(axiosMock.history.post).toHaveLength(1);
-            expect(axiosMock.history.post[0].url).toBe("/api/admin/users/toggleAdmin");
-        });
+        await waitFor(() => expect(axiosMock.history.post).toHaveLength(1));
+        await waitFor(() => expect(axiosMock.history.post[0].url).toBe("/api/admin/users/toggleAdmin"));
+        await waitFor(() => expect(axiosMock.history.post[0].params.id).toBe(usersFixtures.threeUsers[1].githubId));
 
-        const secondRowInstructorButton = await screen.getByTestId(`${testId}-cell-row-1-col-toggle-instructor-button`);
+        const secondRowInstructorButton = screen.getByTestId(`${testId}-cell-row-1-col-toggle-instructor-button`);
         expect(secondRowInstructorButton).toHaveTextContent("toggle-instructor");
         fireEvent.click(secondRowInstructorButton);
-
-        await waitFor(() => {
-            expect(axiosMock.history.post).toHaveLength(2);
-            expect(axiosMock.history.post[0].params.id).toBe(usersFixtures.threeUsers[1].githubId);
-        });
+        
+        await waitFor(() => expect(axiosMock.history.post).toHaveLength(2));
+        await waitFor(() => expect(axiosMock.history.post[1].url).toBe("/api/admin/users/toggleInstructor"));
+        await waitFor(() => expect(axiosMock.history.post[1].params.id).toBe(usersFixtures.threeUsers[1].githubId));
     });
 });
