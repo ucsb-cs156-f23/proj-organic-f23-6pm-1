@@ -6,7 +6,7 @@ import LoadingPage from "main/pages/LoadingPage";
 import LoginPage from "main/pages/LoginPage";
 import ProfilePage from "main/pages/ProfilePage";
 
-import CourseIndexPage from "main/pages/Courses/CoursesCreatePage";
+import CourseIndexPage from "main/pages/Courses/CourseIndexPage";
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
 
