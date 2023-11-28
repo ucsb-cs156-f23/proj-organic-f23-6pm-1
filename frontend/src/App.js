@@ -6,6 +6,10 @@ import LoadingPage from "main/pages/LoadingPage";
 import LoginPage from "main/pages/LoginPage";
 import ProfilePage from "main/pages/ProfilePage";
 
+import CoursesCreatePage from "main/pages/Courses/CoursesCreatePage";
+import CoursesEditPage from "main/pages/Courses/CoursesEditPage";
+import CoursesIndexPage from "main/pages/Courses/CoursesIndexPage";
+
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
 
@@ -19,12 +23,17 @@ function App() {
     <>
       <Route path="/admin/users" element={<AdminUsersPage />} />
       <Route path="/admin/jobs" element={<AdminJobsPage />} />
+      
+      <Route path="/admin/courses/edit/:id" element={<CoursesEditPage />} />
+      <Route path="/admin/courses/create" element={<CoursesCreatePage />} />
+      <Route path="/admin/courses" element={<CoursesIndexPage />} />
     </>
   ) : null;
 
   const userRoutes = hasRole(currentUser, "ROLE_USER") ? (
     <>
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/courses" element={<CoursesIndexPage />} />
     </>
   ) : null;
 
