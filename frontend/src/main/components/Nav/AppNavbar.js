@@ -53,7 +53,7 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
               }
             </Nav>
             {
-              currentUser && currentUser.loggedIn && (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) && (
+              (hasRole(currentUser, "ROLE_INSTRUCTOR") || hasRole(currentUser, "ROLE_ADMIN")) && (
                 <>
                   <Nav.Link as={Link} to="/courses">Courses</Nav.Link>
                 </>
