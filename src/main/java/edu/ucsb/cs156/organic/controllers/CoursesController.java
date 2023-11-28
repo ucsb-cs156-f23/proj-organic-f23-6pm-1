@@ -17,16 +17,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 
-
+import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
+import java.util.Optional;
+
 
 @Tag(name = "Courses")
 @RequestMapping("/api/courses")
@@ -54,6 +64,24 @@ public class CoursesController extends ApiController {
         } else {
             return courseRepository.findCoursesStaffedByUser(u.getGithubId());
         }
+    }
+
+    @Operation(summary= "Get a single course")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("")
+    public Course getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        User u = getCurrentUser().getUser();
+
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, id));
+        
+        if(!u.isAdmin()){
+                courseStaffRepository.findByCourseIdAndGithubId(id, u.getGithubId())
+                        .orElseThrow(() -> new AccessDeniedException(
+                        String.format("User %s is not authorized to get course %d", u.getGithubLogin(), id)));
+        }
+        return course;
     }
 
     @Operation(summary = "Create a new course")
@@ -117,6 +145,18 @@ public class CoursesController extends ApiController {
         return courseStaff;
     }
 
+    @Operation(summary = "Remove staff from a course")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/staff")
+    public Object deleteStaff(
+            @Parameter(name = "id") @RequestParam Long id) {
+        Staff staff = courseStaffRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Staff.class, id.toString()));
+
+        courseStaffRepository.delete(staff);
+        return genericMessage("Staff with id %s deleted".formatted(id));
+    }
+
     @Operation(summary = "Get Staff for course")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getStaff")
@@ -132,4 +172,49 @@ public class CoursesController extends ApiController {
         return courseStaff;
     }
 
+    @Operation(summary = "Update a course")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @PutMapping("/update")
+    public Course updateCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId,
+            @RequestBody @Valid Course incoming) throws JsonProcessingException {
+        
+        User u = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        if(!u.isAdmin())
+            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            .orElseThrow(() -> new AccessDeniedException(
+                String.format("User %s is not authorized to update course %d", u.getGithubLogin(), courseId)));
+
+        course.setName(incoming.getName());
+        course.setSchool(incoming.getSchool());
+        course.setTerm(incoming.getTerm());
+        course.setStart(incoming.getStart());
+        course.setEnd(incoming.getEnd());
+        course.setGithubOrg(incoming.getGithubOrg());
+
+        courseRepository.save(course);
+        return course;
+    }
+
+    @Transactional
+    @Operation(summary = "Delete a course")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @DeleteMapping("/delete")
+    public Object deleteCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId) throws JsonProcessingException {
+        
+        User u = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        if(!u.isAdmin())
+            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            .orElseThrow(() -> new AccessDeniedException(
+                String.format("User %s is not authorized to delete course %d", u.getGithubLogin(), courseId)));
+
+        courseRepository.delete(course);
+        courseStaffRepository.deleteByCourseId(courseId);
+        return genericMessage("Course with id %s deleted".formatted(courseId));
+    }
 }

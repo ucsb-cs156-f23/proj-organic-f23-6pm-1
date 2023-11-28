@@ -2,12 +2,14 @@ package edu.ucsb.cs156.organic.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import edu.ucsb.cs156.organic.entities.Staff;
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 import edu.ucsb.cs156.organic.models.CurrentUser;
 import edu.ucsb.cs156.organic.services.CurrentUserService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -44,6 +46,30 @@ public abstract class ApiController {
       "type", e.getClass().getSimpleName(),
       "message", e.getMessage()
     );
+  }
+
+  /**
+   * Exception handler to return HTTP status code 403 Forbidden 
+   * when an AccessDeniedException is thrown
+   * @param e AccessDeniedException
+   * @return map with type and message
+   */
+  @ExceptionHandler({ AccessDeniedException.class })
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public Object handleAccessDeniedException(Throwable e) {
+    return Map.of(
+      "type", e.getClass().getSimpleName(),
+      "message", e.getMessage()
+    );
+  }
+
+  /**
+   * Generic message to return in a controller method
+   * @param message
+   * @return map with message
+   */
+  protected Object genericMessage(String message) {
+    return Map.of("message", message);
   }
 
   private ObjectMapper mapper;
