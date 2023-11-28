@@ -43,7 +43,7 @@ describe("CoursesUtils", () => {
 
             // assert
             expect(result).toEqual({
-                url: "/api/courses",
+                url: "/api/courses/delete",
                 method: "DELETE",
                 params: { id: 1 }
             });
@@ -58,7 +58,7 @@ describe("CoursesUtils", () => {
 
             // assert
             expect(result).toEqual({
-                url: "/api/courses",
+                url: "/api/courses/delete",
                 method: "DELETE",
                 params: {
                     "id": undefined
