@@ -132,9 +132,6 @@ const apiCurrentUserFixtures = {
                 }
             },
             { "authority": "SCOPE_profile" }]
-
-
-
     },
     instructorUser: {
         "user":
@@ -196,9 +193,6 @@ const apiCurrentUserFixtures = {
                 }
             },
             { "authority": "SCOPE_profile" }]
-
-
-
     },
 };
 
@@ -210,6 +204,16 @@ const currentUserFixtures = {
             rolesList: [
                 "ROLE_USER",
                 "ROLE_ADMIN"
+            ]
+        },
+    },
+    instructorUser: {
+        loggedIn: true,
+        root: {
+            ...(apiCurrentUserFixtures.adminUser),
+            rolesList: [
+                "ROLE_USER",
+                "ROLE_INSTRUCTOR"
             ]
         },
     },
