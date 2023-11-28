@@ -82,11 +82,11 @@ describe("UserTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
     expect(screen.getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
 
-    /*const editButton = screen.queryByTestId(`${testId}-cell-row-0-col-Edit-button`);
+    const editButton = screen.queryByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editButton).not.toBeInTheDocument();
 
     const deleteButton = screen.queryByTestId(`${testId}-cell-row-0-col-Delete-button`);
-    expect(deleteButton).not.toBeInTheDocument();*/
+    expect(deleteButton).not.toBeInTheDocument();
 
   });
 

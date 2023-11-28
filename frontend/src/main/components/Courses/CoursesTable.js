@@ -57,10 +57,10 @@ export default function CoursesTable({ courses, currentUser }) {
     ];
 
     // Stryker disable next-line all
-    //if (hasRole(currentUser, "ROLE_ADMIN")) {
+    if (hasRole(currentUser, "ROLE_ADMIN")) {
         columns.push(ButtonColumn("Edit", "primary", editCallback, "CoursesTable"));
         columns.push(ButtonColumn("Delete", "danger", deleteCallback, "CoursesTable"));
-    //}
+    }
 
     return <OurTable
         data={courses}

@@ -3,8 +3,7 @@ import { useBackend } from 'main/utils/useBackend';
 
 import CoursesTable from 'main/components/Courses/CoursesTable';
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-//import { hasRole, useCurrentUser } from 'main/utils/currentUser';
-import { useCurrentUser } from 'main/utils/currentUser';
+import { hasRole, useCurrentUser } from 'main/utils/currentUser';
 import { Button } from 'react-bootstrap';
 
 export default function CoursesIndexPage() {
@@ -21,7 +20,7 @@ export default function CoursesIndexPage() {
         );
 
     const createButton = () => {
-        //if (hasRole(currentUser, "ROLE_ADMIN")) {
+        if (hasRole(currentUser, "ROLE_ADMIN")) {
             return (
                 <Button
                     variant="primary"
@@ -31,7 +30,7 @@ export default function CoursesIndexPage() {
                     Create New Course
                 </Button>
             )
-        //} 
+        } 
     }
 
     return (
