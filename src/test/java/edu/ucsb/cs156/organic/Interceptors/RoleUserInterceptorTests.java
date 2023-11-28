@@ -8,7 +8,7 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.Authentication;
+import  org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -50,8 +50,8 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
     @BeforeEach
     public void setupSecurityContext(){
         Map<String, Object> attributes = new HashMap<>();
-        attributes.put("email", "cap@ucsb.edu");
         attributes.put("githubId", 123456);
+        attributes.put("email", "cap@ucsb.edu");
         attributes.put("githubLogin", "cap105");
         attributes.put("fullName", "Cap Lee");
         attributes.put("emailVerified", true);
@@ -74,14 +74,14 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
          // Set up
          User mockUser = User.builder()
          .email("cgaucho@ucsb.edu")
-         .githubId(128545)
-         .githubLogin("cgaucho123")
-         .fullName("Cap Gaucho")
+         .githubId(124515)
+         .githubLogin("win208")
+         .fullName("Winbort Zang")
          .emailVerified(true)
          .admin(false)
          .instructor(true)
          .build();
-        when(userRepository.findByGithubId(128545)).thenReturn(Optional.of(mockUser));
+        when(userRepository.findByGithubId(124515)).thenReturn(Optional.of(mockUser));
 
         // Act
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/currentUser");
@@ -103,7 +103,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
         boolean hasAdminRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
         boolean hasInstructorRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_INSTRUCTOR"));
         boolean hasUserRole = updatedAuthorities.stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"));
-        assertTrue(hasAdminRole, "ROLE_ADMIN should exist in authorities");
+        assertTrue(hasAdminRole, "ROLE_ADMIN should exist authorities");
         assertTrue(hasInstructorRole, "ROLE_INSTRUCTOR should exist in authorities");
         assertTrue(hasUserRole, "ROLE_USER should exist in authorities");
     }
@@ -112,7 +112,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
     public void interceptor_removes_admin_role_when_admin_field_in_db_is_false() throws Exception {
         // Set up
         User mockUser = User.builder()
-            .email("cap105@ucsb.edu")
+            .email("cap@ucsb.edu")
             .githubId(123456)
             .githubLogin("cap105")
             .fullName("Cap Lee")
@@ -148,7 +148,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
     }
 
     @Test
-    public void interceptor_removes_instructor_role_when_instructor_field_in_db_is_false() throws Exception {
+    public void interceptor_removes_instructor_role_when_driver_field_in_db_is_false() throws Exception {
         // Set up
         User mockUser = User.builder()
             .email("cap@ucsb.edu")
@@ -184,6 +184,5 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
         assertTrue(hasAdminRole, "ROLE_ADMIN should exist in authorities");
         assertFalse(hasInstructorRole, "ROLE_INSTRUCTOR should be removed from authorities");
         assertTrue(hasUserRole, "ROLE_USER should exist in authorities");
-        
     }
 }
