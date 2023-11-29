@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 
 export function useCurrentUser() {
   let rolesList = ["ERROR_GETTING_ROLES"];
-  return useQuery("/api/currentUser", async () => {
+  return useQuery("current user", async () => {
     try {
       const response = await axios.get("/api/currentUser");
       try {
@@ -19,7 +19,7 @@ export function useCurrentUser() {
       return { loggedIn: false, root: null };
     }
   }, {
-    initialData: { loggedIn: false, root: null, initialData:true }
+    initialData: { loggedIn: false, root: null, initialData: true }
   });
 }
 
@@ -34,10 +34,29 @@ export function useLogout() {
   return mutation;
 }
 
-export function hasRole(currentUser, role) {
+/*export function hasRole(currentUser, role) {
   return currentUser
     && currentUser.loggedIn
     && currentUser.root
     && currentUser.root.rolesList
     && currentUser.root.rolesList.includes(role)
+}*/
+export function hasRole(currentUser, role) {
+
+  // The following hack is because there is some bug in terms of the
+  // shape of the data returned by useCurrentUser.  Is there a separate 
+  // data level, or not? 
+
+  // We will file an issue to track that down and then remove this hack
+
+  if (currentUser == null) return false;
+
+  if ("data" in currentUser &&
+    "root" in currentUser.data &&
+    currentUser.data.root != null &&
+    "rolesList" in currentUser.data.root) {
+    return currentUser.data.root.rolesList.includes(role);
+  }
+
+  return currentUser.root?.rolesList?.includes(role);
 }
