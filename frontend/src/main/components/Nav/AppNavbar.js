@@ -44,23 +44,21 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
           <Navbar.Collapse className="justify-content-between">
             <Nav className="mr-auto">
               {
-                (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) && (
+                hasRole(currentUser, "ROLE_ADMIN") && (
                   <NavDropdown title="Admin" id="appnavbar-admin-dropdown" data-testid="appnavbar-admin-dropdown" >
                     <NavDropdown.Item href="/admin/users">Users</NavDropdown.Item>
                     <NavDropdown.Item href="/admin/jobs">Manage Jobs</NavDropdown.Item>
-                    <NavDropdown.Item href="/admin/courses">Manage Jobs</NavDropdown.Item>
-                  </NavDropdown>
-                )
-              }
-              {
-                hasRole(currentUser, "ROLE_USER") && (
-                  <NavDropdown title="User" id="appnavbar-user-dropdown" data-testid="appnavbar-user-dropdown" >
-                    <NavDropdown.Item href="/courses">Manage Jobs</NavDropdown.Item>
                   </NavDropdown>
                 )
               }
             </Nav>
-
+            {
+              (hasRole(currentUser, "ROLE_INSTRUCTOR") || hasRole(currentUser, "ROLE_ADMIN")) && (
+                <>
+                  <Nav.Link as={Link} to="/courses">Courses</Nav.Link>
+                </>
+              )
+            }
             <Nav className="ml-auto">
               {
                 currentUser && currentUser.loggedIn ? (
