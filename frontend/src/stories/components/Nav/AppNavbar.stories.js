@@ -25,6 +25,11 @@ basic_loggedInAdminUser.args = {
     currentUser: currentUserFixtures.adminUser
 };
 
+export const basic_loggedInInstructorUser = Template.bind({});
+basic_loggedInInstructorUser.args = {
+    currentUser: currentUserFixtures.instructorUser
+};
+
 export const basic_loggedInRegularUser = Template.bind({});
 basic_loggedInRegularUser.args = {
     currentUser: currentUserFixtures.userOnly
