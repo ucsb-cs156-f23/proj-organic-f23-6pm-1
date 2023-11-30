@@ -54,7 +54,7 @@ public class CoursesController extends ApiController {
     UserRepository userRepository;
 
     @Operation(summary = "List all courses")
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/all")
     public Iterable<Course> allCourses() {
         User u = getCurrentUser().getUser();
@@ -67,7 +67,7 @@ public class CoursesController extends ApiController {
     }
 
     @Operation(summary= "Get a single course")
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("")
     public Course getById(
             @Parameter(name="id") @RequestParam Long id) {

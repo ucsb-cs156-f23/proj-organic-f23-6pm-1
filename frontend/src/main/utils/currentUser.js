@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 
 export function useCurrentUser() {
   let rolesList = ["ERROR_GETTING_ROLES"];
-  return useQuery("/api/currentUser", async () => {
+  return useQuery("current user", async () => {
     try {
       const response = await axios.get("/api/currentUser");
       try {
