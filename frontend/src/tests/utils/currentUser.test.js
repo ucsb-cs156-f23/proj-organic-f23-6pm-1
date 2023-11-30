@@ -34,8 +34,7 @@ describe("utils/currentUser tests", () => {
 
             expect(result.current.data).toEqual({ loggedIn: false, root: null, initialData:true });
             
-            //const queryState = queryClient.getQueryState("/api/currentUser");
-            const queryState = queryClient.getQueryState("current user");
+            const queryState = queryClient.getQueryState("/api/currentUser");
             expect(queryState).toBeDefined();
 
             queryClient.clear();
