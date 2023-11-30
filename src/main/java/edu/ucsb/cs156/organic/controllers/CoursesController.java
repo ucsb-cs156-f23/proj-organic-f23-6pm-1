@@ -54,20 +54,22 @@ public class CoursesController extends ApiController {
     UserRepository userRepository;
 
     @Operation(summary = "List all courses")
-    //@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/all")
     public Iterable<Course> allCourses() {
         User u = getCurrentUser().getUser();
         log.info("u={}", u);
-        if (u.isAdmin()) {
+        /*if (u.isAdmin()) {
             return courseRepository.findAll();
         } else {
             return courseRepository.findCoursesStaffedByUser(u.getGithubId());
-        }
+        }*/
+        log.info("I am here!");
+        return courseRepository.findAll();
     }
 
     @Operation(summary= "Get a single course")
-    //@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("")
     public Course getById(
             @Parameter(name="id") @RequestParam Long id) {
