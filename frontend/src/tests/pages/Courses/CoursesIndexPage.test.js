@@ -107,6 +107,7 @@ describe("CoursesIndexPage tests", () => {
         await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
         
         //const errorMessage = console.error.mock.calls[0][0];
+        //const errorMessage = console.error.mock;
         //expect(errorMessage).toMatch("Error communicating with backend via GET on /api/courses/all");
         const errorMessage = axiosMock.history.get.data;
         expect(errorMessage).toEqual(undefined);

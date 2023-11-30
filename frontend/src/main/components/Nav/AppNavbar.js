@@ -48,7 +48,7 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
                   <NavDropdown title="Admin" id="appnavbar-admin-dropdown" data-testid="appnavbar-admin-dropdown" >
                     <NavDropdown.Item href="/admin/users">Users</NavDropdown.Item>
                     <NavDropdown.Item href="/admin/jobs">Manage Jobs</NavDropdown.Item>
-                    <NavDropdown.Item href="/admin/courses">Manage Jobs</NavDropdown.Item>
+                    <NavDropdown.Item href="/admin/courses">Manage Courses</NavDropdown.Item>
                   </NavDropdown>
                 )
               }
