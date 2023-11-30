@@ -31,7 +31,7 @@ describe("UserTable tests", () => {
     );
 
     const expectedHeaders = ["id", "Course Name", "School", "Term", "Start Date", "End Date", "GitHub Org"];
-    const expectedFields = ["id", "name", "school", "term", "start", "end", "githubOrg"];
+    const expectedFields = ["id", "name", "school", "term", "startDate", "endDate", "githubOrg"];
     const testId = "coursesTable";
 
     // assert
@@ -61,7 +61,7 @@ describe("UserTable tests", () => {
     );
 
     const expectedHeaders = ["id", "Course Name", "School", "Term", "Start Date", "End Date", "GitHub Org"];
-    const expectedFields = ["id", "name", "school", "term", "start", "end", "githubOrg"];
+    const expectedFields = ["id", "name", "school", "term", "startDate", "endDate", "githubOrg"];
     const testId = "CoursesTable";
 
     expectedHeaders.forEach((headerText) => {
@@ -104,7 +104,7 @@ describe("UserTable tests", () => {
     );
 
     const expectedHeaders = ["id", "Course Name", "School", "Term", "Start Date", "End Date", "GitHub Org"];
-    const expectedFields = ["id", "name", "school", "term", "start", "end", "githubOrg"];
+    const expectedFields = ["id", "name", "school", "term", "startDate", "endDate", "githubOrg"];
     const testId = "CoursesTable";
 
     expectedHeaders.forEach((headerText) => {
