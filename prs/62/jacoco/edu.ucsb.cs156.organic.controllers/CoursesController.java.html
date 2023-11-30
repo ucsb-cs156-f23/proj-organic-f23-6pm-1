@@ -91,8 +91,8 @@ import java.util.Optional;
             @Parameter(name = &quot;name&quot;, description =&quot;course name, e.g. CMPSC 156&quot; ) @RequestParam String name,
             @Parameter(name = &quot;school&quot;, description =&quot;school abbreviation e.g. UCSB&quot; ) @RequestParam String school,
             @Parameter(name = &quot;term&quot;, description = &quot;quarter or semester, e.g. F23&quot;) @RequestParam String term,
-            @Parameter(name = &quot;startDate&quot;, description = &quot;in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-10-01T00:00:00 see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;start&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @Parameter(name = &quot;endDate&quot;, description = &quot;in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-12-31T11:59:59 see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;end&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+            @Parameter(name = &quot;startDate&quot;, description = &quot;in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-10-01T00:00:00 see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;startDate&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @Parameter(name = &quot;endDate&quot;, description = &quot;in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-12-31T11:59:59 see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;endDate&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
             @Parameter(name = &quot;githubOrg&quot;, description = &quot;for example ucsb-cs156-f23&quot; ) @RequestParam String githubOrg)
             throws JsonProcessingException {
 
@@ -185,7 +185,7 @@ import java.util.Optional;
 
     @Operation(summary = &quot;Update a course&quot;)
     @PreAuthorize(&quot;hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')&quot;)
-    @PutMapping(&quot;/update&quot;)
+    @PutMapping(&quot;&quot;)
     public Course updateCourse(
             @Parameter(name = &quot;courseId&quot;) @RequestParam Long courseId,
             @RequestBody @Valid Course incoming) throws JsonProcessingException {
@@ -212,21 +212,21 @@ import java.util.Optional;
     @Transactional
     @Operation(summary = &quot;Delete a course&quot;)
     @PreAuthorize(&quot;hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')&quot;)
-    @DeleteMapping(&quot;/delete&quot;)
+    @DeleteMapping(&quot;&quot;)
     public Object deleteCourse(
-            @Parameter(name = &quot;courseId&quot;) @RequestParam Long courseId) throws JsonProcessingException {
+            @Parameter(name = &quot;id&quot;) @RequestParam Long id) throws JsonProcessingException {
         
 <span class="fc" id="L219">        User u = getCurrentUser().getUser();</span>
-<span class="fc" id="L220">        Course course = courseRepository.findById(courseId)</span>
-<span class="fc" id="L221">                .orElseThrow(() -&gt; new EntityNotFoundException(Course.class, courseId.toString()));</span>
+<span class="fc" id="L220">        Course course = courseRepository.findById(id)</span>
+<span class="fc" id="L221">                .orElseThrow(() -&gt; new EntityNotFoundException(Course.class, id.toString()));</span>
 <span class="fc bfc" id="L222" title="All 2 branches covered.">        if(!u.isAdmin())</span>
-<span class="fc" id="L223">            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())</span>
+<span class="fc" id="L223">            courseStaffRepository.findByCourseIdAndGithubId(id, u.getGithubId())</span>
 <span class="fc" id="L224">            .orElseThrow(() -&gt; new AccessDeniedException(</span>
-<span class="fc" id="L225">                String.format(&quot;User %s is not authorized to delete course %d&quot;, u.getGithubLogin(), courseId)));</span>
+<span class="fc" id="L225">                String.format(&quot;User %s is not authorized to delete course %d&quot;, u.getGithubLogin(), id)));</span>
 
 <span class="fc" id="L227">        courseRepository.delete(course);</span>
-<span class="fc" id="L228">        courseStaffRepository.deleteByCourseId(courseId);</span>
-<span class="fc" id="L229">        return genericMessage(&quot;Course with id %s deleted&quot;.formatted(courseId));</span>
+<span class="fc" id="L228">        courseStaffRepository.deleteByCourseId(id);</span>
+<span class="fc" id="L229">        return genericMessage(&quot;Course with id %s deleted&quot;.formatted(id));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
