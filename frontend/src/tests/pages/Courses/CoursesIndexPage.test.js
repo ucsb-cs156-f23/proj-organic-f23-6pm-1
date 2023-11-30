@@ -42,11 +42,9 @@ describe("CoursesIndexPage tests", () => {
         axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
     };
 
-
-    const queryClient = new QueryClient();
-
     test("Renders with Create Button for admin user", async () => {
         setupAdminUser();
+        const queryClient = new QueryClient();
         axiosMock.onGet("/api/courses/all").reply(200, []);
 
         render(
@@ -67,6 +65,7 @@ describe("CoursesIndexPage tests", () => {
 
     test("renders three reviews correctly for regular user", async () => {
         setupUserOnly();
+        const queryClient = new QueryClient();
         axiosMock.onGet("/api/courses/all").reply(200, coursesFixtures.threeCourses);
 
         render(
@@ -91,10 +90,9 @@ describe("CoursesIndexPage tests", () => {
 
     test("renders empty table when backend unavailable, user only", async () => {
         setupUserOnly();
+        const queryClient = new QueryClient();
         axiosMock.onGet("/api/courses/all").timeout();
-
         const restoreConsole = mockConsole();
-
 
         render(
             <QueryClientProvider client={queryClient}>
@@ -117,6 +115,7 @@ describe("CoursesIndexPage tests", () => {
 
     test("what happens when you click delete, admin", async () => {
         setupAdminUser();
+        const queryClient = new QueryClient();
 
         axiosMock.onGet("/api/courses/all").reply(200, coursesFixtures.threeCourses);
         axiosMock.onDelete("/api/courses/delete").reply(200, "Course with id 1 was deleted");

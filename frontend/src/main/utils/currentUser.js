@@ -34,6 +34,13 @@ export function useLogout() {
   return mutation;
 }
 
+/*export function hasRole(currentUser, role) {
+  return currentUser
+    && currentUser.loggedIn
+    && currentUser.root
+    && currentUser.root.rolesList
+    && currentUser.root.rolesList.includes(role)
+}*/
 export function hasRole(currentUser, role) {
 
   // The following hack is because there is some bug in terms of the
