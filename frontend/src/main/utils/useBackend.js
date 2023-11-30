@@ -25,51 +25,53 @@ import { toast } from "react-toastify";
 //     []
 // );
 
-export function useBackend(queryKey, axiosParameters, initialData, rest) {
+export function useBackend(queryKey, axiosParameters, initialData) {
 
-    return useQuery({
-        queryKey: queryKey,
-        queryFn: async () => {
-            try {
-                const response = await axios(axiosParameters);
-                return response.data;
-            } catch (e) {
-                // Stryker disable next-line OptionalChaining
-                if (e.response?.data?.message) {
-                    toast.error(e.response.data.message);
-                } else {
-                    const errorMessage = `Error communicating with backend via ${axiosParameters.method} on ${axiosParameters.url}`;
-                    toast.error(errorMessage);
-                }
-                throw e;
-            }
-        }, 
-        initialData: initialData,
-        ...rest
-        });
+    return useQuery(queryKey, async () => {
+        try {
+            const response = await axios(axiosParameters);
+            return response.data;
+        } catch (e) {
+            const errorMessage = `Error communicating with backend via ${axiosParameters.method} on ${axiosParameters.url}`;
+            toast(errorMessage);
+            console.error(errorMessage, e);
+            throw e;
+        }
+    }, {
+        initialData
+    });
 }
 
-const wrappedParams = async (params) => {
-    return await (await axios(params)).data;
+// const wrappedParams = async (params) =>
+//   await ( await axios(params)).data;
+
+
+const reportAxiosError = (error) => {
+    console.error("Axios Error:", error);
+    toast(`Axios Error: ${error}`);
+    return null;
 };
 
-export function useBackendMutation(objectToAxiosParams, useMutationParams, queryKey = null) {
+const wrappedParams = async (params) => {
+    try {
+        return await (await axios(params)).data;
+    } catch (rejectedValue) {
+        reportAxiosError(rejectedValue);
+        throw rejectedValue;
+    }
+};
+
+export function useBackendMutation(objectToAxiosParams, useMutationParams, queryKey=null) {
     const queryClient = useQueryClient();
 
     return useMutation((object) => wrappedParams(objectToAxiosParams(object)), {
-        onError: (error) => {
-            // Stryker disable next-line OptionalChaining : we want to check if each nested object is there but we dont want to write tests for each specific case
-            if (error.response?.data?.message) {
-                toast.error(error.response.data.message);
-            } else {
-                const errorMessage = `Error communicating with backend via ${error.response.config.method} on ${error.response.config.url}`;
-                toast.error(errorMessage);
-            }
+        onError: (data) => {
+            toast(`${data}`)
         },
-        // Stryker disable all : Not sure how to set up the complex behavior needed to test this
+        // Stryker disable all: Not sure how to set up the complex behavior needed to test this
         onSettled: () => {
-            if (queryKey !== null)
-                queryClient.invalidateQueries(queryKey);
+            if (queryKey!==null)
+             queryClient.invalidateQueries(queryKey);
         },
         // Stryker restore all
         retry: false,
