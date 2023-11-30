@@ -26,7 +26,7 @@ export default function RecommendationRequestEditPage({storybook=false}) {
     url: "/api/courses",
     method: "PUT",
     params: {
-      id: course.id,
+      courseId: course.id,
     },
     data: {
       name: course.name,
