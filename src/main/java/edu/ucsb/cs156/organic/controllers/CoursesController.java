@@ -59,13 +59,10 @@ public class CoursesController extends ApiController {
     public Iterable<Course> allCourses() {
         User u = getCurrentUser().getUser();
         log.info("u={}", u);
-        /*if (u.isAdmin()) {
+        if (u.isAdmin()) {
             return courseRepository.findAll();
-        } else {
-            return courseRepository.findCoursesStaffedByUser(u.getGithubId());
-        }*/
-        log.info("I am here!");
-        return courseRepository.findAll();
+        }
+        return courseRepository.findCoursesStaffedByUser(u.getGithubId());
     }
 
     @Operation(summary= "Get a single course")
