@@ -45,7 +45,7 @@ public class UsersController extends ApiController {
     @Operation(summary = "Toggle the admin status")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleAdmin")
-    public Object toggleAdmin( @Parameter(name = "Github Id", description = "Integer, github id of user to toggle their admin status", example = "1", required = true) @RequestParam Integer id){
+    public Object toggleAdmin( @Parameter(name = "id", description = "Integer, github id of user to toggle their admin status", example = "1", required = true) @RequestParam Integer id){
         User user = userRepository.findByGithubId(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
         user.setAdmin(!user.isAdmin());
         userRepository.save(user);
@@ -55,7 +55,7 @@ public class UsersController extends ApiController {
     @Operation(summary = "Toggle the instructor status")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleInstructor")
-    public Object toggleInstructor( @Parameter(name = "Github Id", description = "Integer, github id of user to toggle their instructor status", example = "1", required = true) @RequestParam Integer id){
+    public Object toggleInstructor( @Parameter(name = "id", description = "Integer, github id of user to toggle their instructor status", example = "1", required = true) @RequestParam Integer id){
         User user = userRepository.findByGithubId(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
         user.setInstructor(!user.isInstructor());
         userRepository.save(user);
