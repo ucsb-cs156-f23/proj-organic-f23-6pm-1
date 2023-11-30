@@ -7,6 +7,8 @@ import LoginPage from "main/pages/LoginPage";
 import ProfilePage from "main/pages/ProfilePage";
 
 import CoursesIndexPage from "main/pages/Courses/CoursesIndexPage";
+import CoursesEditPage from "main/pages/Courses/CoursesEditPage";
+import CoursesCreatePage from "main/pages/Courses/CoursesCreatePage";
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
 
@@ -34,7 +36,11 @@ function App() {
     : <Route path="/" element={<LoginPage />} />;
 
   const courseRoute = (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) 
-    ? <Route path="/courses" element={<CoursesIndexPage />} /> 
+    ? <>
+        <Route path="/courses" element={<CoursesIndexPage />} /> 
+        <Route path="/courses/edit/:id" element={<CoursesEditPage />} /> 
+        <Route path="/courses/create" element={<CoursesCreatePage />} /> 
+      </>
     : null;
 
   /*  Display the LoadingPage while awaiting currentUser 

@@ -192,6 +192,7 @@ const apiCurrentUserFixtures = {
                     "updated_at": "2023-11-08T20:14:48Z"
                 }
             },
+            { "authority": "ROLE_INSTRUCTOR"},
             { "authority": "SCOPE_profile" }]
     },
 };
