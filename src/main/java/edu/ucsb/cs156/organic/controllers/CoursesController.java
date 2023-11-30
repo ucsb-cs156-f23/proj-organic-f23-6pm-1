@@ -185,7 +185,7 @@ public class CoursesController extends ApiController {
 
     @Operation(summary = "Update a course")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
-    @PutMapping("/update")
+    @PutMapping("")
     public Course updateCourse(
             @Parameter(name = "courseId") @RequestParam Long courseId,
             @RequestBody @Valid Course incoming) throws JsonProcessingException {
@@ -212,20 +212,20 @@ public class CoursesController extends ApiController {
     @Transactional
     @Operation(summary = "Delete a course")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
-    @DeleteMapping("/delete")
+    @DeleteMapping("")
     public Object deleteCourse(
-            @Parameter(name = "courseId") @RequestParam Long courseId) throws JsonProcessingException {
+            @Parameter(name = "id") @RequestParam Long id) throws JsonProcessingException {
         
         User u = getCurrentUser().getUser();
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, id.toString()));
         if(!u.isAdmin())
-            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            courseStaffRepository.findByCourseIdAndGithubId(id, u.getGithubId())
             .orElseThrow(() -> new AccessDeniedException(
-                String.format("User %s is not authorized to delete course %d", u.getGithubLogin(), courseId)));
+                String.format("User %s is not authorized to delete course %d", u.getGithubLogin(), id)));
 
         courseRepository.delete(course);
-        courseStaffRepository.deleteByCourseId(courseId);
-        return genericMessage("Course with id %s deleted".formatted(courseId));
+        courseStaffRepository.deleteByCourseId(id);
+        return genericMessage("Course with id %s deleted".formatted(id));
     }
 }

@@ -323,7 +323,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                 assertEquals(expectedMap, responseMap);
         }
 
-        //PUT /api/courses/update?courseId=... testing
+        //PUT /api/courses?courseId=... testing
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
@@ -345,7 +345,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                put("/api/courses/update?courseId=1")
+                                put("/api/courses?courseId=1")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)
@@ -393,7 +393,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                put("/api/courses/update?courseId=1")
+                                put("/api/courses?courseId=1")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)
@@ -437,7 +437,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                put("/api/courses/update?courseId=1")
+                                put("/api/courses?courseId=1")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)
@@ -474,7 +474,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                put("/api/courses/update?courseId=67")
+                                put("/api/courses?courseId=67")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .characterEncoding("utf-8")
                                                 .content(requestBody)
@@ -612,7 +612,7 @@ public class CoursesControllerTests extends ControllerTestCase {
         }
         
 
-        // Tests for DELETE /api/courses/delete?courseId=...
+        // Tests for DELETE /api/courses?id=...
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
@@ -623,7 +623,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/courses/delete?courseId=1")
+                                delete("/api/courses?id=1")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
@@ -658,7 +658,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/courses/delete?courseId=1")
+                                delete("/api/courses?id=1")
                                                 .with(csrf()))
                                 .andExpect(status().isForbidden()).andReturn();
 
@@ -688,7 +688,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                delete("/api/courses/delete?courseId=1")
+                                delete("/api/courses?id=1")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
@@ -710,7 +710,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                 delete("/api/courses/delete?courseId=1")
+                                 delete("/api/courses?id=1")
                                                  .with(csrf()))
                                  .andExpect(status().isNotFound()).andReturn();
 
