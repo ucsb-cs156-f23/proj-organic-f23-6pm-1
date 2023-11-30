@@ -45,7 +45,7 @@ describe("CoursesUtils", () => {
             expect(result).toEqual({
                 url: "/api/courses/delete",
                 method: "DELETE",
-                params: { id: 1 }
+                params: { courseId: 1 }
             });
         });
 
@@ -61,7 +61,7 @@ describe("CoursesUtils", () => {
                 url: "/api/courses/delete",
                 method: "DELETE",
                 params: {
-                    "id": undefined
+                    "courseId": undefined
                 }
             });
         });

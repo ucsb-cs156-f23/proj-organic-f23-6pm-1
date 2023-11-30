@@ -11,7 +11,7 @@ export default function CoursesEditPage({storybook=false}) {
     const { data: course, _error, _status } =
         useBackend(
             // Stryker disable next-line all : don't test internal caching of React Query
-            [`/api/courses?courseId=${id}`],
+            [`/api/courses?id=${id}`],
             {  // Stryker disable next-line all : GET is the default, so mutating this to "" doesn't introduce a bug
                 method: "GET",
                 url: `/api/courses`,

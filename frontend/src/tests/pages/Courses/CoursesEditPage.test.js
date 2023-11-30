@@ -148,7 +148,7 @@ describe("CoursesEditPage tests", () => {
             expect(mockNavigate).toBeCalledWith({ "to": "/courses" });
 
             expect(axiosMock.history.put.length).toBe(1); // times called
-            expect(axiosMock.history.put[0].params).toEqual({ id: 1 });
+            expect(axiosMock.history.put[0].params).toEqual({ courseId: 1 });
             expect(axiosMock.history.put[0].data).toBe(JSON.stringify({
                 name: "CS130",
                 school: "UC Berkely",
