@@ -18,9 +18,7 @@ export default function UsersTable({ users, showToggleButtons = false }) {
     // Stryker disable all : hard to test for query caching
     const toggleAdminMutation = useBackendMutation(
         cellToAxiosParamsToggleAdmin,
-        {onSuccess: () => {
-            window.location.reload();
-        }},
+        {},
         ["/api/admin/users"]
     );
     // Stryker restore all 
@@ -42,9 +40,7 @@ export default function UsersTable({ users, showToggleButtons = false }) {
     // Stryker disable all : hard to test for query caching
     const toggleInstructorMutation = useBackendMutation(
         cellToAxiosParamsToggleInstructor,
-        {onSuccess: () => {
-            window.location.reload();
-        }},
+        {},
         ["/api/admin/users"]
     );
     // Stryker restore all 
