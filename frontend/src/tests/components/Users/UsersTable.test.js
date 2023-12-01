@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import UsersTable from "main/components/Users/UsersTable";
-import prim from "main/components/Users/UsersTable.js"
 import { formatTime } from "main/utils/dateUtils";
 import usersFixtures from "fixtures/usersFixtures";
 import { QueryClient, QueryClientProvider } from 'react-query';
