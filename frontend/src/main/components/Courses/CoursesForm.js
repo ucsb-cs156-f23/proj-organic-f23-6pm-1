@@ -97,35 +97,35 @@ function CoursesForm({ initialContents, submitAction, buttonLabel = "Create" }) 
             <Row>
                 <Col>
                     <Form.Group className="mb-3" >
-                            <Form.Label htmlFor="start">Start (iso format)</Form.Label>
+                            <Form.Label htmlFor="startDate">Start (iso format)</Form.Label>
                             <Form.Control
-                                data-testid={testIdPrefix + "-start"}
-                                id="start"
+                                data-testid={testIdPrefix + "-startDate"}
+                                id="startDate"
                                 type="datetime-local"
-                                isInvalid={Boolean(errors.start)}
-                                {...register("start", { 
-                                    required: "Start is required." 
+                                isInvalid={Boolean(errors.startDate)}
+                                {...register("startDate", { 
+                                    required: "StartDate is required." 
                                 })}
                             />
                             <Form.Control.Feedback type="invalid">
-                                {errors.start?.message}
+                                {errors.startDate?.message}
                             </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" >
-                            <Form.Label htmlFor="end">End (iso format)</Form.Label>
+                            <Form.Label htmlFor="endDate">End (iso format)</Form.Label>
                             <Form.Control
-                                data-testid={testIdPrefix + "-end"}
-                                id="end"
+                                data-testid={testIdPrefix + "-endDate"}
+                                id="endDate"
                                 type="datetime-local"
-                                isInvalid={Boolean(errors.end)}
-                                {...register("end", { 
-                                    required: "End is required." 
+                                isInvalid={Boolean(errors.endDate)}
+                                {...register("endDate", { 
+                                    required: "EndDate is required." 
                                 })}
                             />
                             <Form.Control.Feedback type="invalid">
-                                {errors.end?.message}
+                                {errors.endDate?.message}
                             </Form.Control.Feedback>
                     </Form.Group>
                 </Col>

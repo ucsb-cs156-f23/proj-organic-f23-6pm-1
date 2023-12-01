@@ -41,6 +41,67 @@ describe("AppNavbar tests", () => {
         expect(adminMenu).toBeInTheDocument();        
     });
 
+    test("renders the Course link for admins", async () => {
+
+        const currentUser = currentUserFixtures.adminUser;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await screen.findByText("Courses");
+        const link = screen.getByText("Courses");
+        expect(link).toBeInTheDocument();
+        expect(link.getAttribute("href")).toBe("/courses");
+    });
+
+        test("renders the Course link for instructors", async () => {
+        
+        const currentUser = currentUserFixtures.instructorUser;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await screen.findByText("Courses");
+        const link = screen.getByText("Courses");
+        expect(link).toBeInTheDocument();
+        expect(link.getAttribute("href")).toBe("/courses");
+    })
+    
+
+    test("doesnt render the Course link for non admin/instructor", async () => {
+        
+        const currentUser = currentUserFixtures.userOnly;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        expect(screen.queryByText("Courses")).not.toBeInTheDocument();
+    });
+
     test("renders correctly for user that hasn't signed in", async () => {
         const currentUser = currentUserFixtures.not_logged_in;
         const doLogin = jest.fn();

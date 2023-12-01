@@ -45,8 +45,8 @@ describe("CoursesForm tests", () => {
                 <CoursesForm />
             </Router>
         );
-        await screen.findByTestId("CoursesForm-start");
-        const startField = screen.getByTestId("CoursesForm-start");
+        await screen.findByTestId("CoursesForm-startDate");
+        const startField = screen.getByTestId("CoursesForm-startDate");
         const submitButton = screen.getByTestId("CoursesForm-submit");
 
         fireEvent.change(startField, { target: { value: 'bad-input' } });
@@ -68,8 +68,8 @@ describe("CoursesForm tests", () => {
         await screen.findByText(/Name is required./);
         expect(screen.getByText(/School is required./)).toBeInTheDocument();
         expect(screen.getByText(/Term is required./)).toBeInTheDocument();
-        expect(screen.getByText(/Start is required./)).toBeInTheDocument();
-        expect(screen.getByText(/End is required./)).toBeInTheDocument();
+        expect(screen.getByText(/StartDate is required./)).toBeInTheDocument();
+        expect(screen.getByText(/EndDate is required./)).toBeInTheDocument();
         expect(screen.getByText(/GithubOrg is required./)).toBeInTheDocument();
     });
 
@@ -88,8 +88,8 @@ describe("CoursesForm tests", () => {
         const nameField = screen.getByTestId("CoursesForm-name");
         const schoolField = screen.getByTestId("CoursesForm-school");
         const termField = screen.getByTestId("CoursesForm-term");
-        const startField = screen.getByTestId("CoursesForm-start");
-        const endField = screen.getByTestId("CoursesForm-end");
+        const startField = screen.getByTestId("CoursesForm-startDate");
+        const endField = screen.getByTestId("CoursesForm-endDate");
         const githubOrgField = screen.getByTestId("CoursesForm-githubOrg");
         const submitButton = screen.getByTestId("CoursesForm-submit");
 
