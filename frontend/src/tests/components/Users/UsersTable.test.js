@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import UsersTable from "main/components/Users/UsersTable";
+import prim from "main/components/Users/UsersTable.js"
 import { formatTime } from "main/utils/dateUtils";
 import usersFixtures from "fixtures/usersFixtures";
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -79,7 +80,9 @@ describe("UserTable tests", () => {
         expect(screen.getByTestId(`${testId}-cell-row-0-col-lastOnline`)).toHaveTextContent(formatTime(usersFixtures.threeUsers[0].lastOnline));
         expect(screen.getByTestId(`${testId}-cell-row-0-col-instructor`)).toHaveTextContent("false");
         expect(screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`)).toHaveTextContent("toggle-admin");
+        expect(screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`)).toHaveClass("btn-primary");
         expect(screen.getByTestId(`${testId}-cell-row-0-col-toggle-instructor-button`)).toHaveTextContent("toggle-instructor");
+        expect(screen.getByTestId(`${testId}-cell-row-0-col-toggle-instructor-button`)).toHaveClass("btn-primary");
         expect(screen.getByTestId(`${testId}-cell-row-1-col-githubLogin`)).toHaveTextContent("cgaucho");
         expect(screen.getByTestId(`${testId}-cell-row-1-col-admin`)).toHaveTextContent("false");
     });
