@@ -9,6 +9,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.ucsb.cs156.organic.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,7 @@ import edu.ucsb.cs156.organic.entities.User;
 
 
 @Component
+@Slf4j
 public class RoleUserInterceptor implements HandlerInterceptor {
 
    @Autowired
@@ -39,10 +42,10 @@ public class RoleUserInterceptor implements HandlerInterceptor {
         // Otherwise interceptor will remove ROLE_ADMIN before the incoming request is processed by backend API
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-
         if (authentication instanceof OAuth2AuthenticationToken ) {
             OAuth2User oAuthUser = ((OAuth2AuthenticationToken) authentication).getPrincipal();
-            Integer githubID = oAuthUser.getAttribute("githubId");
+            Integer githubID = oAuthUser.getAttribute("id");
+            log.info("interceptor githubId={}", githubID);
             Optional<User> optionalUser = userRepository.findByGithubId(githubID);
             if (optionalUser.isPresent()){
                 User user = optionalUser.get();
