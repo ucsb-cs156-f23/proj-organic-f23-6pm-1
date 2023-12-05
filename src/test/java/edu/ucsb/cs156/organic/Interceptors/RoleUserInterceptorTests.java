@@ -1,4 +1,4 @@
-package edu.ucsb.cs156.organic.Interceptors;
+package edu.ucsb.cs156.organic.interceptors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import edu.ucsb.cs156.organic.entities.User;
+import edu.ucsb.cs156.organic.interceptors.RoleUserInterceptor;
 import edu.ucsb.cs156.organic.controllers.ControllerTestCase;
 import edu.ucsb.cs156.organic.repositories.UserRepository;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,7 +51,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
     @BeforeEach
     public void setupSecurityContext(){
         Map<String, Object> attributes = new HashMap<>();
-        attributes.put("githubId", 123456);
+        attributes.put("id", 123456);
         attributes.put("email", "cap@ucsb.edu");
         attributes.put("githubLogin", "cap105");
         attributes.put("fullName", "Cap Lee");
