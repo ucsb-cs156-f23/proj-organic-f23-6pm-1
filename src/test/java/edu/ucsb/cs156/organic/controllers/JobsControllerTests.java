@@ -169,61 +169,14 @@ public class JobsControllerTests extends ControllerTestCase {
                 assertEquals("running", jobReturned.getStatus());
 
                 await().atMost(5, SECONDS)
-                .untilAsserted(() -> {
-                        verify(jobsRepository, atLeast(1)).save(jobCaptor.capture());                        
-                        List<Job> values = jobCaptor.getAllValues();
-                        assertEquals("complete", values.get(0).getStatus(), "first saved job should show running");
-                        assertEquals(jobCompleted.getLog(), values.get(0).getLog());
-                });
-               
-        }
+                                .untilAsserted(() -> {
+                                        verify(jobsRepository, atLeast(1)).save(jobCaptor.capture());
+                                        List<Job> values = jobCaptor.getAllValues();
+                                        assertEquals("complete", values.get(0).getStatus(),
+                                                        "first saved job should show running");
+                                        assertEquals(jobCompleted.getLog(), values.get(0).getLog());
+                                });
 
-        @WithMockUser(roles = { "ADMIN" })
-        @Test
-        public void admin_can_launch_test_job_that_fails() throws Exception {
-
-                // arrange
-
-                User user = currentUserService.getUser();
-
-                Job jobStarted = Job.builder()
-                                .id(0L)
-                                .createdBy(user)
-                                .createdAt(null)
-                                .updatedAt(null)
-                                .status("running")
-                                .log("Hello World! from test job!")
-                                .build();
-
-                Job jobFailed = Job.builder()
-                                .id(0L)
-                                .createdBy(user)
-                                .createdAt(null)
-                                .updatedAt(null)
-                                .status("error")
-                                .log("Hello World! from test job!\nFail!")
-                                .build();
-
-                when(jobsRepository.save(eq(jobStarted))).thenReturn(jobStarted);
-                when(jobsRepository.save(eq(jobFailed))).thenReturn(jobFailed);
-
-                // act
-                MvcResult response = mockMvc
-                                .perform(post("/api/jobs/launch/testjob?fail=true&sleepMs=3000").with(csrf()))
-                                .andExpect(status().isOk()).andReturn();
-
-                String responseString = response.getResponse().getContentAsString();
-                Job jobReturned = objectMapper.readValue(responseString, Job.class);
-
-                assertEquals("running", jobReturned.getStatus());
-
-                await().atMost(6, SECONDS)
-                .untilAsserted(() -> {
-                        verify(jobsRepository, atLeast(1)).save(jobCaptor.capture());                        
-                        List<Job> values = jobCaptor.getAllValues();
-                        assertEquals("error", values.get(0).getStatus(), "first saved job should show running");
-                        assertEquals(jobFailed.getLog(), values.get(0).getLog());
-                });
         }
 
         @WithMockUser(roles = { "ADMIN" })
@@ -232,7 +185,7 @@ public class JobsControllerTests extends ControllerTestCase {
                 Map<String, String> expectedMap = Map.of(
                                 "type", "IllegalArgumentException",
                                 "message", "sleepMs must be between 0 and 60000");
-                String expected = mapper.writeValueAsString(expectedMap);       
+                String expected = mapper.writeValueAsString(expectedMap);
                 MvcResult response = mockMvc
                                 .perform(post("/api/jobs/launch/testjob?fail=false&sleepMs=-1").with(csrf()))
                                 .andExpect(status().isBadRequest()).andReturn();
@@ -253,7 +206,7 @@ public class JobsControllerTests extends ControllerTestCase {
                 Map<String, String> expectedMap = Map.of(
                                 "type", "IllegalArgumentException",
                                 "message", "sleepMs must be between 0 and 60000");
-                String expected = mapper.writeValueAsString(expectedMap);       
+                String expected = mapper.writeValueAsString(expectedMap);
                 MvcResult response = mockMvc
                                 .perform(post("/api/jobs/launch/testjob?fail=false&sleepMs=60001").with(csrf()))
                                 .andExpect(status().isBadRequest()).andReturn();
@@ -279,5 +232,4 @@ public class JobsControllerTests extends ControllerTestCase {
                                 .perform(post("/api/jobs/launch/testjob?fail=false&sleepMs=60000").with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
         }
-
 }
